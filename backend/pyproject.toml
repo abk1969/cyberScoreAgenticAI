@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "mh-cyberscore"
+version = "1.0.0"
+description = "MH-CyberScore — Sovereign Cyber Scoring & VRM Platform for Malakoff Humanis"
+authors = ["Malakoff Humanis SSI <ssi@malakoffhumanis.com>"]
+readme = "README.md"
+packages = [{include = "app"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115"
+uvicorn = {version = "^0.34", extras = ["standard"]}
+sqlalchemy = "^2.0"
+alembic = "^1.14"
+psycopg = {version = "^3.2", extras = ["binary"]}
+celery = {version = "^5.4", extras = ["redis"]}
+redis = "^5.2"
+pydantic = "^2.10"
+pydantic-settings = "^2.7"
+httpx = "^0.28"
+python-jose = {version = "^3.3", extras = ["cryptography"]}
+passlib = {version = "^1.7", extras = ["bcrypt"]}
+python-multipart = "^0.0.18"
+jinja2 = "^3.1"
+weasyprint = "^63"
+python-pptx = "^1.0"
+openpyxl = "^3.1"
+qdrant-client = "^1.12"
+langchain = "^0.3"
+dnspython = "^2.7"
+cryptography = "^44"
+tenacity = "^9.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+pytest-asyncio = "^0.24"
+pytest-cov = "^6.0"
+ruff = "^0.8"
+mypy = "^1.13"
+httpx = "^0.28"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D203", "D213", "COM812", "ISC001"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D100", "D103", "D104"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

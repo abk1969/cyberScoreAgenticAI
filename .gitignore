@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Node.js
+node_modules/
+.next/
+out/
+.turbo/
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+*.pem
+*.key
+*.cert
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data volumes (local)
+data/
+
+# Generated reports
+*.generated.pdf
+*.generated.pptx
+*.generated.xlsx

@@ -1,0 +1,77 @@
+# MH-CyberScore — Agent Configuration
+# Each agent's runtime parameters
+
+agents:
+  orchestrator:
+    queue: default
+    timeout_seconds: 600
+    max_retries: 1
+    concurrency: 5
+    description: "Chef d'orchestre — planifie et coordonne les scans"
+
+  osint:
+    queue: osint
+    timeout_seconds: 300
+    max_retries: 3
+    rate_limit_per_sec: 1.0
+    concurrency: 10
+    description: "Collecteur OSINT — données publiques légales"
+
+  darkweb:
+    queue: darkweb
+    timeout_seconds: 180
+    max_retries: 2
+    rate_limit_per_sec: 0.5
+    concurrency: 5
+    description: "Surveillance fuites — sources légales uniquement"
+
+  nthparty:
+    queue: nthparty
+    timeout_seconds: 240
+    max_retries: 2
+    concurrency: 3
+    description: "Détection chaîne de sous-traitance Nth-party"
+
+  chat:
+    queue: chat
+    timeout_seconds: 60
+    max_retries: 1
+    concurrency: 20
+    model: "mistralai/Mistral-Large-Instruct-2407"
+    rag_top_k: 5
+    description: "ChatMH — assistant IA RAG cyber scoring"
+
+  report:
+    queue: reports
+    timeout_seconds: 120
+    max_retries: 2
+    concurrency: 5
+    description: "Générateur de rapports PDF/PPTX/XLSX"
+
+  alert:
+    queue: default
+    timeout_seconds: 30
+    max_retries: 1
+    concurrency: 10
+    score_drop_threshold: 50
+    description: "Détection anomalies et alerting multi-canal"
+
+  compliance:
+    queue: default
+    timeout_seconds: 60
+    max_retries: 1
+    concurrency: 5
+    frameworks: ["dora", "nis2", "rgpd"]
+    description: "Mapping conformité réglementaire"
+
+# Celery beat schedule
+scheduled_tasks:
+  rescan_tier1:
+    cron: "0 2 * * *"          # Daily at 02:00
+    tier: 1
+  rescan_tier2:
+    cron: "0 3 * * 1"          # Monday at 03:00
+    tier: 2
+  rescan_tier3:
+    cron: "0 4 1 * *"          # 1st of month at 04:00
+    tier: 3

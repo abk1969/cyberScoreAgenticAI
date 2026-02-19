@@ -1,0 +1,80 @@
+# MH-CyberScore — Tools Configuration
+# External API endpoints, rate limits, and quotas
+
+tools:
+  shodan:
+    base_url: "https://api.shodan.io"
+    rate_limit_per_sec: 1.0
+    timeout_seconds: 30
+    max_retries: 3
+    monthly_quota: 100        # Free tier: 100 queries/month
+    auth_type: "query_param"  # key=API_KEY
+    env_var: "MH_SHODAN_API_KEY"
+
+  censys:
+    base_url: "https://search.censys.io/api"
+    rate_limit_per_sec: 0.4   # Free tier: ~120 queries/5min
+    timeout_seconds: 30
+    max_retries: 3
+    auth_type: "basic"        # API_ID:API_SECRET
+    env_var_id: "MH_CENSYS_API_ID"
+    env_var_secret: "MH_CENSYS_API_SECRET"
+
+  dns:
+    # No external API — uses dnspython direct resolution
+    rate_limit_per_sec: 5.0
+    timeout_seconds: 10
+    max_retries: 3
+
+  ssl:
+    # Direct socket connection — no external API
+    rate_limit_per_sec: 2.0
+    timeout_seconds: 10
+    max_retries: 2
+
+  cve:
+    base_url: "https://services.nvd.nist.gov/rest/json"
+    rate_limit_per_sec: 0.6   # NVD: 5 req/30sec without API key
+    timeout_seconds: 30
+    max_retries: 3
+    auth_type: "none"         # Public API (API key optional for higher rate)
+
+  euvd:
+    base_url: "https://euvd.enisa.europa.eu/api"
+    rate_limit_per_sec: 1.0
+    timeout_seconds: 30
+    max_retries: 3
+    auth_type: "none"
+
+  hibp:
+    base_url: "https://haveibeenpwned.com/api/v3"
+    rate_limit_per_sec: 0.1   # HIBP: 10 req/min
+    timeout_seconds: 15
+    max_retries: 2
+    auth_type: "header"       # hibp-api-key: KEY
+    env_var: "MH_HIBP_API_KEY"
+
+  abuseipdb:
+    base_url: "https://api.abuseipdb.com/api/v2"
+    rate_limit_per_sec: 0.2   # Free: 1000 checks/day
+    timeout_seconds: 15
+    max_retries: 3
+    daily_quota: 1000
+    auth_type: "header"       # Key: API_KEY
+    env_var: "MH_ABUSEIPDB_API_KEY"
+
+  virustotal:
+    base_url: "https://www.virustotal.com/api/v3"
+    rate_limit_per_sec: 0.07  # Free: 4 req/min
+    timeout_seconds: 15
+    max_retries: 2
+    daily_quota: 500
+    auth_type: "header"       # x-apikey: KEY
+    env_var: "MH_VIRUSTOTAL_API_KEY"
+
+  ct_logs:
+    base_url: "https://crt.sh"
+    rate_limit_per_sec: 0.5
+    timeout_seconds: 30
+    max_retries: 3
+    auth_type: "none"         # Public API
