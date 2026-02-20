@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { Settings, Brain, Shield, Users, Save, Loader2, CheckCircle, XCircle } from 'lucide-react'
+import { Settings, Brain, Shield, Users, Save, Loader2, CheckCircle, XCircle, EyeOff, Wifi, WifiOff } from 'lucide-react'
 import { api } from '@/lib/api'
 
 const LLM_PROVIDERS = [
@@ -43,6 +43,10 @@ export default function AdminPage() {
   const [baseUrl, setBaseUrl] = useState('')
   const [testStatus, setTestStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle')
   const [saving, setSaving] = useState(false)
+  const [proxyStatus, setProxyStatus] = useState<{
+    status: string; mode: string; visible_ip: string | null; message: string
+  } | null>(null)
+  const [proxyChecking, setProxyChecking] = useState(false)
 
   const handleProviderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newProvider = e.target.value
@@ -50,6 +54,20 @@ export default function AdminPage() {
     const models = LLM_MODELS[newProvider]
     if (models && models.length > 0) {
       setModel(models[0].value)
+    }
+  }
+
+  const handleCheckProxy = async () => {
+    setProxyChecking(true)
+    try {
+      const result = await api.get<{
+        status: string; mode: string; visible_ip: string | null; message: string
+      }>('/api/v1/admin/proxy/status')
+      setProxyStatus(result)
+    } catch {
+      setProxyStatus({ status: 'error', mode: 'unknown', visible_ip: null, message: 'Impossible de verifier le proxy' })
+    } finally {
+      setProxyChecking(false)
     }
   }
 
@@ -95,6 +113,9 @@ export default function AdminPage() {
         <TabsList>
           <TabsTrigger value="llm">
             <Brain className="mr-1.5 h-4 w-4" /> Fournisseur LLM
+          </TabsTrigger>
+          <TabsTrigger value="proxy">
+            <EyeOff className="mr-1.5 h-4 w-4" /> Anonymisation IP
           </TabsTrigger>
           <TabsTrigger value="scoring">
             <Shield className="mr-1.5 h-4 w-4" /> Configuration Scoring
@@ -197,6 +218,103 @@ export default function AdminPage() {
                   Enregistrer
                 </button>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Proxy / IP Anonymization */}
+        <TabsContent value="proxy">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <EyeOff className="h-5 w-5" />
+                Anonymisation IP des scans OSINT
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-sm text-gray-600">
+                Tous les scans OSINT (Shodan, Censys, HIBP, VirusTotal, etc.) passent par un proxy
+                pour masquer l&apos;adresse IP source de l&apos;application. Configurez le mode proxy
+                dans le fichier <code className="rounded bg-gray-100 px-1">.env</code>.
+              </p>
+
+              <div className="rounded-lg border p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-[#1B3A5C]">Modes disponibles</h3>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="rounded border p-3">
+                    <p className="font-medium">tor</p>
+                    <p className="text-xs text-gray-500">SOCKS5 via Tor (anonymat maximal)</p>
+                  </div>
+                  <div className="rounded border p-3">
+                    <p className="font-medium">socks5</p>
+                    <p className="text-xs text-gray-500">Proxy SOCKS5 generique</p>
+                  </div>
+                  <div className="rounded border p-3">
+                    <p className="font-medium">http</p>
+                    <p className="text-xs text-gray-500">Proxy HTTP/HTTPS</p>
+                  </div>
+                  <div className="rounded border p-3">
+                    <p className="font-medium">rotating</p>
+                    <p className="text-xs text-gray-500">Liste rotative de proxys</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 border-t pt-4">
+                <button
+                  onClick={handleCheckProxy}
+                  disabled={proxyChecking}
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#2E75B6] px-4 py-2 text-sm font-medium text-[#2E75B6] hover:bg-[#2E75B6]/5 disabled:opacity-50"
+                >
+                  {proxyChecking ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Wifi className="h-4 w-4" />
+                  )}
+                  Verifier le proxy
+                </button>
+
+                {proxyStatus && (
+                  <div className="flex items-center gap-3">
+                    {proxyStatus.status === 'active' ? (
+                      <Badge style={{ backgroundColor: '#27AE60', color: '#fff' }}>
+                        <Wifi className="mr-1 h-3 w-3" /> Proxy actif
+                      </Badge>
+                    ) : proxyStatus.status === 'disabled' ? (
+                      <Badge style={{ backgroundColor: '#E67E22', color: '#fff' }}>
+                        <WifiOff className="mr-1 h-3 w-3" /> Proxy desactive
+                      </Badge>
+                    ) : (
+                      <Badge style={{ backgroundColor: '#C0392B', color: '#fff' }}>
+                        <XCircle className="mr-1 h-3 w-3" /> Erreur proxy
+                      </Badge>
+                    )}
+                    <span className="text-sm text-gray-600">{proxyStatus.message}</span>
+                  </div>
+                )}
+              </div>
+
+              {proxyStatus?.visible_ip && (
+                <div className="rounded-lg bg-green-50 border border-green-200 p-4">
+                  <p className="text-sm font-medium text-green-800">
+                    IP visible par les cibles : <code className="font-mono text-lg">{proxyStatus.visible_ip}</code>
+                  </p>
+                  <p className="mt-1 text-xs text-green-600">
+                    Mode : {proxyStatus.mode} — Votre IP reelle est masquee
+                  </p>
+                </div>
+              )}
+
+              {proxyStatus?.status === 'disabled' && (
+                <div className="rounded-lg bg-orange-50 border border-orange-200 p-4">
+                  <p className="text-sm font-medium text-orange-800">
+                    Attention : les scans OSINT utilisent votre IP reelle.
+                  </p>
+                  <p className="mt-1 text-xs text-orange-600">
+                    Configurez <code>MH_PROXY_MODE=tor</code> dans .env pour activer l&apos;anonymisation.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

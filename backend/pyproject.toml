@@ -17,7 +17,7 @@ celery = {version = "^5.4", extras = ["redis"]}
 redis = "^5.2"
 pydantic = "^2.10"
 pydantic-settings = "^2.7"
-httpx = "^0.28"
+httpx = {version = "^0.28", extras = ["socks"]}
 python-jose = {version = "^3.3", extras = ["cryptography"]}
 passlib = {version = "^1.7", extras = ["bcrypt"]}
 python-multipart = "^0.0.18"

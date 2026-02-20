@@ -20,6 +20,7 @@ from app.schemas.llm_config import (
     LLMProviderInfo,
 )
 from app.services.llm_provider import LLMProviderConfig, get_llm_provider
+from app.services.proxy_service import get_proxy_url, verify_proxy
 from app.utils.constants import DEFAULT_DOMAIN_WEIGHTS, SCORING_DOMAINS
 from app.utils.crypto import decrypt_data, encrypt_data
 
@@ -110,6 +111,8 @@ async def get_system_config(
         "cors_origins": settings.cors_origins,
         "scoring_domains": SCORING_DOMAINS,
         "scoring_weights": _scoring_weights,
+        "proxy_mode": settings.proxy_mode,
+        "proxy_active": get_proxy_url() is not None,
     }
 
 
@@ -245,3 +248,38 @@ async def list_llm_providers(
 ) -> list[LLMProviderInfo]:
     """List all available LLM providers with their supported models."""
     return LLM_PROVIDERS
+
+
+# ---------------------------------------------------------------------------
+# Proxy / IP Anonymization Endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.get("/proxy/status")
+async def get_proxy_status(
+    _current_user: object = Depends(require_role("admin", "rssi")),
+) -> dict:
+    """Get current proxy/anonymization status and visible external IP.
+
+    Performs a real connectivity test through the configured proxy to
+    confirm the scan origin IP is properly masked.
+    """
+    result = await verify_proxy()
+    return result
+
+
+@router.get("/proxy/config")
+async def get_proxy_config(
+    _current_user: object = Depends(require_role("admin")),
+) -> dict:
+    """Get proxy configuration (non-sensitive)."""
+    return {
+        "mode": settings.proxy_mode,
+        "tor_url": settings.proxy_tor_url if settings.proxy_mode == "tor" else None,
+        "socks5_configured": bool(settings.proxy_socks5_url),
+        "http_configured": bool(settings.proxy_http_url),
+        "rotating_count": len(
+            [p for p in settings.proxy_rotating_list.split(",") if p.strip()]
+        ) if settings.proxy_rotating_list else 0,
+        "bypass_hosts": settings.proxy_bypass_hosts,
+    }

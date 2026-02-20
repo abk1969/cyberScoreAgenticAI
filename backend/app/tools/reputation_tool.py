@@ -11,6 +11,7 @@ from typing import Any
 import httpx
 
 from app.config import settings
+from app.services.proxy_service import get_scan_http_client
 from app.tools.base_tool import BaseTool
 
 logger = logging.getLogger("mh_cyberscore.tools.reputation")
@@ -47,11 +48,12 @@ class ReputationTool(BaseTool):
         }
         start = time.monotonic()
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with get_scan_http_client(
+                timeout=self.timeout, headers=headers,
+            ) as client:
                 response = await client.get(
                     url,
                     params={"ipAddress": ip, "maxAgeInDays": 90, "verbose": ""},
-                    headers=headers,
                 )
                 response.raise_for_status()
                 result = response.json()
@@ -89,8 +91,10 @@ class ReputationTool(BaseTool):
         }
         start = time.monotonic()
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(url, headers=headers)
+            async with get_scan_http_client(
+                timeout=self.timeout, headers=headers,
+            ) as client:
+                response = await client.get(url)
                 response.raise_for_status()
                 result = response.json()
             duration = time.monotonic() - start

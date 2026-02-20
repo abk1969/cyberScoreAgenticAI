@@ -73,6 +73,16 @@ services:
         condition: service_healthy
 
   # ============================================
+  # Proxy / IP Anonymization
+  # ============================================
+  tor:
+    image: dperson/torproxy:latest
+    ports:
+      - "9050:9050"
+      - "8118:8118"
+    restart: unless-stopped
+
+  # ============================================
   # Application Layer
   # ============================================
   backend:
@@ -97,6 +107,8 @@ services:
       MH_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-mhcs_minio}
       MH_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
       MH_MINIO_BUCKET: ${MH_MINIO_BUCKET:-mh-cyberscore}
+      MH_PROXY_MODE: ${MH_PROXY_MODE:-tor}
+      MH_PROXY_TOR_URL: socks5://tor:9050
       MH_DEBUG: "true"
       MH_CORS_ORIGINS: '["http://localhost:3000"]'
     ports:
@@ -134,7 +146,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: celery -A app.agents.celery_app worker -l info -Q osint,darkweb,nthparty,reports,chat,default
+    command: celery -A app.agents.celery_app worker -l info -Q osint,darkweb,nthparty,reports,chat,internal,default
     environment:
       MH_DATABASE_URL: postgresql+asyncpg://${DB_USER:-mhcs}:${DB_PASSWORD}@postgres:5432/mh_cyberscore
       MH_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
@@ -150,10 +162,13 @@ services:
       MH_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-mhcs_minio}
       MH_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
       MH_MINIO_BUCKET: ${MH_MINIO_BUCKET:-mh-cyberscore}
+      MH_PROXY_MODE: ${MH_PROXY_MODE:-tor}
+      MH_PROXY_TOR_URL: socks5://tor:9050
       MH_DEBUG: "true"
     depends_on:
       - backend
       - redis
+      - tor
 
   celery-beat:
     build:

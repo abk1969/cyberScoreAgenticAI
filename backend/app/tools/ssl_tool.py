@@ -12,6 +12,7 @@ from typing import Any
 
 import httpx
 
+from app.services.proxy_service import get_scan_http_client
 from app.tools.base_tool import BaseTool
 
 logger = logging.getLogger("mh_cyberscore.tools.ssl")
@@ -91,7 +92,7 @@ class SSLTool(BaseTool):
         """
         url = f"https://{domain}"
         try:
-            async with httpx.AsyncClient(
+            async with get_scan_http_client(
                 timeout=self.timeout,
                 follow_redirects=True,
                 max_redirects=3,

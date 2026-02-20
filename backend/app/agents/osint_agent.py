@@ -26,6 +26,7 @@ from typing import Any
 import httpx
 
 from app.agents.base_agent import AgentResult, BaseAgent
+from app.services.proxy_service import get_scan_http_client
 from app.agents.celery_app import celery_app
 from app.tools.censys_tool import CensysTool
 from app.tools.ct_logs_tool import CTLogsTool
@@ -370,7 +371,7 @@ class OSINTAgent(BaseAgent):
         ]
 
         try:
-            async with httpx.AsyncClient(
+            async with get_scan_http_client(
                 timeout=10.0, follow_redirects=True, max_redirects=3,
             ) as client:
                 # Check privacy policy

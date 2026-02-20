@@ -22,6 +22,7 @@ from xml.etree import ElementTree
 import httpx
 
 from app.agents.base_agent import AgentResult, BaseAgent
+from app.services.proxy_service import get_scan_http_client
 from app.agents.celery_app import celery_app
 from app.tools.hibp_tool import HIBPTool
 
@@ -149,7 +150,7 @@ class DarkWebAgent(BaseAgent):
             f'"{domain}" api_key OR apikey OR api-key',
         ]
 
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with get_scan_http_client(timeout=15.0) as client:
             for query in search_queries:
                 try:
                     resp = await client.get(
@@ -179,7 +180,7 @@ class DarkWebAgent(BaseAgent):
         """Check CERT-FR/ANSSI RSS feed for mentions of domain."""
         bulletins: list[dict[str, Any]] = []
         try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
+            async with get_scan_http_client(timeout=15.0) as client:
                 resp = await client.get(CERTFR_RSS_URL)
                 if resp.status_code == 200:
                     root = ElementTree.fromstring(resp.content)
@@ -207,7 +208,7 @@ class DarkWebAgent(BaseAgent):
         news: list[dict[str, Any]] = []
         domain_base = domain.split(".")[0].lower()
 
-        async with httpx.AsyncClient(timeout=15.0) as client:
+        async with get_scan_http_client(timeout=15.0) as client:
             for feed_url in SECURITY_FEEDS:
                 try:
                     resp = await client.get(feed_url)

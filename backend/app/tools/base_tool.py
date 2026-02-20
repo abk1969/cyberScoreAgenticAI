@@ -16,6 +16,7 @@ from tenacity import (
     wait_exponential,
 )
 
+from app.services.proxy_service import get_scan_http_client
 from app.utils.exceptions import ToolError
 
 logger = logging.getLogger("mh_cyberscore.tools")
@@ -77,13 +78,14 @@ class BaseTool:
         start = time.monotonic()
 
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with get_scan_http_client(
+                timeout=self.timeout, headers=self.headers,
+            ) as client:
                 response = await client.request(
                     method=method,
                     url=url,
                     params=params,
                     json=json_data,
-                    headers=self.headers,
                 )
                 response.raise_for_status()
                 duration = time.monotonic() - start

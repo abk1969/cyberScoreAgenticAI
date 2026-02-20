@@ -44,6 +44,17 @@ class Settings(BaseSettings):
     # Encryption key for API keys at rest (base64-encoded 32 bytes)
     encryption_key: str = ""
 
+    # Proxy / IP Anonymization for OSINT scans
+    # Modes: none, tor, socks5, http, rotating
+    proxy_mode: str = "none"
+    proxy_tor_url: str = "socks5://127.0.0.1:9050"
+    proxy_socks5_url: str = ""
+    proxy_http_url: str = ""
+    # Comma-separated list for rotating mode: "socks5://1.2.3.4:1080,http://5.6.7.8:8080"
+    proxy_rotating_list: str = ""
+    # Comma-separated hosts to bypass proxy (local services auto-bypassed)
+    proxy_bypass_hosts: str = ""
+
     # OSINT API keys
     shodan_api_key: str = ""
     censys_api_id: str = ""
