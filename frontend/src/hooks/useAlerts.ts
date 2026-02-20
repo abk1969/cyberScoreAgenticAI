@@ -3,10 +3,21 @@ import { api } from '@/lib/api'
 import { API_ROUTES } from '@/lib/constants'
 import type { AlertItem } from '@/types/api'
 
+interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  page_size: number
+  pages: number
+}
+
 export function useAlerts() {
   return useQuery({
     queryKey: ['alerts'],
-    queryFn: () => api.get<AlertItem[]>(API_ROUTES.alerts),
+    queryFn: async () => {
+      const res = await api.get<PaginatedResponse<AlertItem>>(API_ROUTES.alerts)
+      return res.items
+    },
   })
 }
 

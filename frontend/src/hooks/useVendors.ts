@@ -3,10 +3,21 @@ import { api } from '@/lib/api'
 import { API_ROUTES } from '@/lib/constants'
 import type { Vendor, VendorCreate, VendorUpdate } from '@/types/vendor'
 
+interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  page_size: number
+  pages: number
+}
+
 export function useVendors() {
   return useQuery({
     queryKey: ['vendors'],
-    queryFn: () => api.get<Vendor[]>(API_ROUTES.vendors),
+    queryFn: async () => {
+      const res = await api.get<PaginatedResponse<Vendor>>(API_ROUTES.vendors)
+      return res.items
+    },
   })
 }
 
