@@ -24,7 +24,7 @@ export function useAlerts() {
 export function useMarkAlertRead() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (id: string) => api.post(API_ROUTES.alertMarkRead(id)),
+    mutationFn: (id: string) => api.patch(API_ROUTES.alertMarkRead(id), {}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['alerts'] })
     },

@@ -3,9 +3,9 @@ import type { ScoringDomain, Grade, Severity } from "@/types/scoring";
 export const API_ROUTES = {
   vendors: "/api/v1/vendors",
   vendor: (id: string) => `/api/v1/vendors/${id}`,
-  vendorScore: (id: string) => `/api/v1/vendors/${id}/score`,
-  vendorDomainScores: (id: string) => `/api/v1/vendors/${id}/domains`,
-  vendorScoreHistory: (id: string) => `/api/v1/vendors/${id}/history`,
+  vendorScore: (id: string) => `/api/v1/scoring/vendors/${id}/latest`,
+  vendorDomainScores: (id: string) => `/api/v1/scoring/vendors/${id}/domains`,
+  vendorScoreHistory: (id: string) => `/api/v1/scoring/vendors/${id}/history`,
   vendorRescan: (id: string) => `/api/v1/vendors/${id}/rescan`,
   portfolioScores: "/api/v1/scoring/portfolio",
   alerts: "/api/v1/alerts",

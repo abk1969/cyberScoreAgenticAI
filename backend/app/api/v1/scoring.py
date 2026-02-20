@@ -111,6 +111,53 @@ async def get_grade_distribution(
     ]
 
 
+@router.get("/executive")
+async def get_executive_summary(
+    db: AsyncSession = Depends(get_db),
+    _current_user: object = Depends(get_current_user),
+) -> dict:
+    """Return executive dashboard summary data."""
+    total_result = await db.execute(select(sa_func.count(Vendor.id)))
+    total_vendors = total_result.scalar() or 0
+
+    tier1_result = await db.execute(
+        select(sa_func.count(Vendor.id)).where(Vendor.tier == 1)
+    )
+    tier1_count = tier1_result.scalar() or 0
+
+    # Count vendors with grade below C (D or F)
+    below_c_count = 0
+    if total_vendors > 0:
+        latest_scores_subq = (
+            select(
+                VendorScore.vendor_id,
+                VendorScore.grade,
+                sa_func.row_number()
+                .over(partition_by=VendorScore.vendor_id, order_by=VendorScore.scanned_at.desc())
+                .label("rn"),
+            )
+        ).subquery()
+        below_c_result = await db.execute(
+            select(sa_func.count()).where(
+                latest_scores_subq.c.rn == 1,
+                latest_scores_subq.c.grade.in_(["D", "F"]),
+            )
+        )
+        below_c_count = below_c_result.scalar() or 0
+
+    return {
+        "financialRisk": "Faible",
+        "doraCoverage": 0,
+        "doraRegistered": 0,
+        "doraTotal": 0,
+        "totalVendors": total_vendors,
+        "tier1Count": tier1_count,
+        "belowCCount": below_c_count,
+        "topActions": [],
+        "previousScore": None,
+    }
+
+
 @router.get("/vendors/{vendor_id}/latest", response_model=ScoreResponse)
 async def get_latest_score(
     vendor_id: str,

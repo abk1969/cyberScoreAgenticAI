@@ -16,12 +16,23 @@ interface Report {
   downloadUrl: string
 }
 
+interface PaginatedResponse<T> {
+  items: T[]
+  total: number
+  page: number
+  page_size: number
+  pages: number
+}
+
 const formatIcons: Record<string, string> = { pdf: 'PDF', pptx: 'PPTX', xlsx: 'XLSX' }
 
 export default function ReportsPage() {
   const { data: reports } = useQuery({
     queryKey: ['reports'],
-    queryFn: () => api.get<Report[]>('/api/v1/reports'),
+    queryFn: async () => {
+      const res = await api.get<PaginatedResponse<Report>>('/api/v1/reports')
+      return res.items
+    },
   })
 
   return (

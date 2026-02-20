@@ -74,11 +74,11 @@ export default function AdminPage() {
   const handleTestConnection = async () => {
     setTestStatus('testing')
     try {
-      await api.post('/api/v1/admin/llm/test', {
+      await api.post('/api/v1/admin/llm-config/test', {
         provider,
-        model,
+        model_name: model,
         api_key: apiKey || undefined,
-        base_url: baseUrl || undefined,
+        api_base_url: baseUrl || undefined,
       })
       setTestStatus('success')
     } catch {
@@ -89,11 +89,11 @@ export default function AdminPage() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      await api.post('/api/v1/admin/llm/config', {
+      await api.put('/api/v1/admin/llm-config', {
         provider,
-        model,
+        model_name: model,
         api_key: apiKey || undefined,
-        base_url: baseUrl || undefined,
+        api_base_url: baseUrl || undefined,
       })
     } catch {
       // Error handled by api client

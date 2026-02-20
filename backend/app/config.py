@@ -10,7 +10,9 @@ class Settings(BaseSettings):
     Example: CS_DATABASE_URL, CS_REDIS_URL, etc.
     """
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="CS_")
+    model_config = SettingsConfigDict(
+        env_file=(".env", "../.env"), env_prefix="CS_"
+    )
 
     # Core
     debug: bool = False
