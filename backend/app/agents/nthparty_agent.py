@@ -106,6 +106,9 @@ class NthPartyAgent(BaseAgent):
         # Calculate concentration risk
         data["concentration_risk"] = self._calculate_concentration(all_deps)
 
+        # Persist VendorDependency records to DB
+        await self._save_dependencies(vendor_id, data)
+
         duration = time.monotonic() - start
         return AgentResult(
             agent_name=self.name,
@@ -173,6 +176,80 @@ class NthPartyAgent(BaseAgent):
                     providers.add(f"CDN/Host: {provider}")
 
         return list(providers)
+
+    async def _save_dependencies(
+        self, vendor_id: str, data: dict[str, Any]
+    ) -> None:
+        """Save detected dependencies as VendorDependency records in the database.
+
+        Args:
+            vendor_id: Vendor UUID.
+            data: Detection results containing cloud_providers and cdn_hosters.
+        """
+        try:
+            from app.database import async_session
+            from app.models.supply_chain import VendorDependency
+
+            from sqlalchemy import delete
+
+            async with async_session() as session:
+                # Clear old dependencies for this vendor
+                await session.execute(
+                    delete(VendorDependency).where(
+                        VendorDependency.vendor_id == vendor_id
+                    )
+                )
+
+                # Save cloud providers (detected via DNS)
+                for provider in data.get("cloud_providers", []):
+                    dep = VendorDependency(
+                        vendor_id=vendor_id,
+                        provider_name=provider,
+                        provider_type=self._classify_provider_type(provider),
+                        dependency_tier=1,
+                        detected_via="dns",
+                        confidence=0.85,
+                    )
+                    session.add(dep)
+
+                # Save CDN/hosters (detected via TLS)
+                for provider in data.get("cdn_hosters", []):
+                    # Extract base provider name (strip "CA: " or "CDN/Host: " prefix)
+                    base_name = provider.split(": ", 1)[-1] if ": " in provider else provider
+                    ptype = "cert" if provider.startswith("CA:") else "cdn"
+                    dep = VendorDependency(
+                        vendor_id=vendor_id,
+                        provider_name=base_name,
+                        provider_type=ptype,
+                        dependency_tier=1,
+                        detected_via="tls",
+                        confidence=0.80,
+                    )
+                    session.add(dep)
+
+                await session.commit()
+                self.logger.info(
+                    "Saved %d dependencies for vendor %s",
+                    len(data.get("cloud_providers", []))
+                    + len(data.get("cdn_hosters", [])),
+                    vendor_id,
+                )
+        except Exception as exc:
+            self.logger.error("Failed to save dependencies: %s", exc)
+
+    @staticmethod
+    def _classify_provider_type(provider: str) -> str:
+        """Classify a provider name into a provider_type category."""
+        provider_lower = provider.lower()
+        if any(w in provider_lower for w in ("aws", "azure", "google cloud", "ovh", "scaleway")):
+            return "cloud"
+        if any(w in provider_lower for w in ("cloudflare", "akamai", "fastly")):
+            return "cdn"
+        if any(w in provider_lower for w in ("365", "workspace", "mimecast", "proofpoint", "barracuda")):
+            return "email"
+        if any(w in provider_lower for w in ("encrypt", "digicert", "globalsign", "sectigo")):
+            return "cert"
+        return "cloud"
 
     def _calculate_concentration(
         self, dependencies: set[str]

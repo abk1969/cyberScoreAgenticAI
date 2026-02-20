@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Alerte MH-CyberScore</title>
+</head>
+<body style="margin:0; padding:0; background:#F7F9FA; font-family:'Segoe UI',Arial,sans-serif; color:#2C3E50;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F9FA; padding:20px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <!-- Severity header -->
+        <tr>
+          <td style="background:{% if severity == 'critical' %}#C0392B{% elif severity == 'high' %}#E67E22{% elif severity == 'medium' %}#F39C12{% else %}#2E75B6{% endif %}; padding:24px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="color:#fff; font-size:20px; font-weight:700;">MH-CyberScore</td>
+                <td align="right" style="color:#fff; font-size:12px; opacity:0.85;">ALERTE {{ severity|upper }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:32px;">
+            <p style="font-size:14px; margin:0 0 8px;">Fournisseur concerne:</p>
+            <p style="font-size:22px; font-weight:700; color:#1B3A5C; margin:0 0 20px;">{{ vendor_name }}</p>
+
+            <div style="background:#F7F9FA; border-left:4px solid {% if severity == 'critical' %}#C0392B{% elif severity == 'high' %}#E67E22{% elif severity == 'medium' %}#F39C12{% else %}#2E75B6{% endif %}; padding:16px; border-radius:0 6px 6px 0; margin-bottom:24px;">
+              <p style="font-size:13px; font-weight:600; margin:0 0 8px;">{{ alert_title }}</p>
+              <p style="font-size:12px; color:#64748B; margin:0;">{{ alert_description }}</p>
+            </div>
+
+            {% if details %}
+            <table width="100%" style="font-size:12px; margin-bottom:24px;">
+              {% for key, value in details.items() %}
+              <tr>
+                <td style="padding:4px 0; color:#64748B; width:140px;">{{ key }}:</td>
+                <td style="padding:4px 0; font-weight:600;">{{ value }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+            {% endif %}
+
+            <table cellpadding="0" cellspacing="0"><tr>
+              <td style="background:#2E75B6; border-radius:6px; padding:12px 28px;">
+                <a href="{{ action_url }}" style="color:#fff; text-decoration:none; font-size:13px; font-weight:600;">Voir les details</a>
+              </td>
+            </tr></table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#F7F9FA; padding:16px 32px; border-top:1px solid #E2E8F0;">
+            <p style="font-size:10px; color:#94A3B8; margin:0; text-align:center;">
+              MH-CyberScore &mdash; {{ generated_at }} &mdash; Cet email est automatique, ne pas repondre.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

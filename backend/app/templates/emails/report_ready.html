@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Rapport Disponible - MH-CyberScore</title>
+</head>
+<body style="margin:0; padding:0; background:#F7F9FA; font-family:'Segoe UI',Arial,sans-serif; color:#2C3E50;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F9FA; padding:20px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <!-- Header -->
+        <tr>
+          <td style="background:#1B3A5C; padding:24px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="color:#fff; font-size:20px; font-weight:700;">MH<span style="color:#2E75B6;">-CyberScore</span></td>
+                <td align="right" style="color:#fff; font-size:12px; opacity:0.85;">Rapport Disponible</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:32px;">
+            <p style="font-size:14px; margin:0 0 20px;">Bonjour {{ recipient_name }},</p>
+
+            <p style="font-size:13px; margin:0 0 16px;">
+              Votre rapport a ete genere avec succes et est pret au telechargement.
+            </p>
+
+            <div style="background:#F7F9FA; border-radius:8px; padding:20px; margin-bottom:24px;">
+              <table width="100%" style="font-size:12px;">
+                <tr>
+                  <td style="padding:4px 0; color:#64748B; width:140px;">Type de rapport:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ report_type }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Format:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ report_format|upper }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Date de generation:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ generated_at }}</td>
+                </tr>
+                {% if vendor_name %}
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Fournisseur:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ vendor_name }}</td>
+                </tr>
+                {% endif %}
+              </table>
+            </div>
+
+            <table cellpadding="0" cellspacing="0"><tr>
+              <td style="background:#2E75B6; border-radius:6px; padding:12px 28px;">
+                <a href="{{ download_url }}" style="color:#fff; text-decoration:none; font-size:13px; font-weight:600;">Telecharger le rapport</a>
+              </td>
+            </tr></table>
+
+            <p style="font-size:11px; color:#94A3B8; margin:16px 0 0;">
+              Ce lien est valable 7 jours. Vous pouvez egalement retrouver vos rapports dans la section Rapports de la plateforme.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#F7F9FA; padding:16px 32px; border-top:1px solid #E2E8F0;">
+            <p style="font-size:10px; color:#94A3B8; margin:0; text-align:center;">
+              MH-CyberScore &mdash; Cet email est automatique, ne pas repondre.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

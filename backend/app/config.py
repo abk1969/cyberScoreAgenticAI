@@ -52,11 +52,29 @@ class Settings(BaseSettings):
     hibp_api_key: str = ""
     abuseipdb_api_key: str = ""
 
+    # Qdrant (Vector DB for RAG)
+    qdrant_url: str = "http://localhost:6333"
+
     # MinIO (S3-compatible sovereign storage)
     minio_endpoint: str = "localhost:9000"
     minio_access_key: str = ""
     minio_secret_key: str = ""
     minio_bucket: str = "mh-cyberscore"
+
+    # Splunk HEC integration
+    splunk_hec_url: str = ""
+    splunk_hec_token: str = ""
+
+    # ServiceNow integration
+    servicenow_instance: str = ""
+    servicenow_user: str = ""
+    servicenow_password: str = ""
+
+    # Slack webhook
+    slack_webhook_url: str = ""
+
+    # Microsoft Teams webhook
+    teams_webhook_url: str = ""
 
 
 settings = Settings()

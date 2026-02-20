@@ -46,7 +46,7 @@ class ChatAgent(BaseAgent):
         super().__init__(name="chat", timeout=60.0)
 
     async def execute(self, vendor_id: str, **kwargs: Any) -> AgentResult:
-        """Process a chat query.
+        """Process a chat query with RAG-powered context.
 
         Args:
             vendor_id: Not used directly (chat is cross-vendor).
@@ -54,7 +54,7 @@ class ChatAgent(BaseAgent):
                      optionally 'conversation_id' (str).
 
         Returns:
-            AgentResult with the AI response.
+            AgentResult with the AI response and source citations.
         """
         message = kwargs.get("message", "")
         user_id = kwargs.get("user_id", "unknown")
@@ -67,8 +67,9 @@ class ChatAgent(BaseAgent):
             message[:100],
         )
 
-        # Step 1: Search relevant context in Qdrant
+        # Step 1: Search relevant context via RAG service
         context = await self._search_context(message)
+        sources = self._extract_sources(context)
 
         # Step 2: Compose prompt with RAG context
         prompt = self._compose_prompt(message, context)
@@ -83,6 +84,7 @@ class ChatAgent(BaseAgent):
                 "Veuillez réessayer dans quelques instants."
             )
 
+        # Format response: {"answer": "...", "sources": [...]}
         duration = time.monotonic() - start
         return AgentResult(
             agent_name=self.name,
@@ -90,6 +92,8 @@ class ChatAgent(BaseAgent):
             success=True,
             data={
                 "response": response,
+                "answer": response,
+                "sources": sources,
                 "user_id": user_id,
                 "conversation_id": conversation_id,
                 "context_chunks_used": len(context),
@@ -101,11 +105,10 @@ class ChatAgent(BaseAgent):
     async def _search_context(
         self, query: str, top_k: int = 5
     ) -> list[dict[str, Any]]:
-        """Search Qdrant vector DB for relevant context.
+        """Search for relevant context using the RAG service.
 
-        Connects to Qdrant, embeds the query via the LLM provider,
-        and retrieves the top-k most relevant chunks.
-        Falls back gracefully to empty context if Qdrant is unavailable.
+        Uses semantic search across scores, findings, and documents
+        collections in Qdrant. Falls back gracefully if unavailable.
 
         Args:
             query: User query text.
@@ -115,29 +118,53 @@ class ChatAgent(BaseAgent):
             List of context chunks with scores and metadata.
         """
         try:
-            from qdrant_client import QdrantClient
-            from qdrant_client.models import models
+            from app.services.llm_provider import LLMProviderConfig, get_llm_provider
+            from app.services.rag_service import RAGService
 
-            client = QdrantClient(url=settings.redis_url.replace("redis://", "http://").replace(":6379", ":6333"))
-            # Use a simple search approach — Qdrant supports text search
-            # if the collection exists with a payload index
-            results = client.scroll(
-                collection_name="mh_cyberscore_docs",
-                limit=top_k,
-                with_payload=True,
-            )
-            chunks = []
-            for point in results[0]:
-                payload = point.payload or {}
-                chunks.append({
-                    "text": payload.get("text", ""),
-                    "source": payload.get("source", ""),
-                    "score": 1.0,
-                })
-            return chunks
+            qdrant_url = settings.redis_url.replace(
+                "redis://", "http://"
+            ).replace(":6379", ":6333")
+
+            llm = get_llm_provider(LLMProviderConfig(
+                provider=settings.llm_default_provider,
+                model_name=settings.llm_default_model,
+                api_base_url=(
+                    settings.ollama_base_url
+                    if settings.llm_default_provider == "ollama"
+                    else None
+                ),
+            ))
+
+            rag = RAGService(qdrant_url=qdrant_url, llm_provider=llm)
+            results = await rag.search(query, top_k=top_k)
+            return results
         except Exception as exc:
-            self.logger.debug("Qdrant context search unavailable: %s", exc)
+            self.logger.debug("RAG context search unavailable: %s", exc)
             return []
+
+    @staticmethod
+    def _extract_sources(context: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Extract structured source citations from RAG context results.
+
+        Args:
+            context: Results from RAG search.
+
+        Returns:
+            List of source dicts with type, id, title, relevance.
+        """
+        sources = []
+        for chunk in context:
+            meta = chunk.get("metadata", {})
+            source_type = meta.get("source", "document")
+            title = meta.get("title", meta.get("vendor_name", ""))
+            source_id = meta.get("finding_id", meta.get("doc_id", meta.get("vendor_id", "")))
+            sources.append({
+                "type": source_type,
+                "id": source_id,
+                "title": title or chunk.get("text", "")[:50],
+                "relevance": round(chunk.get("score", 0), 2),
+            })
+        return sources
 
     def _compose_prompt(
         self, message: str, context: list[dict[str, Any]]
@@ -146,19 +173,41 @@ class ChatAgent(BaseAgent):
 
         Args:
             message: User query.
-            context: Retrieved context chunks.
+            context: Retrieved context chunks from RAG service.
 
         Returns:
             Formatted prompt string.
         """
-        context_text = "\n".join(
-            f"- {chunk.get('text', '')}" for chunk in context
-        )
+        if context:
+            context_lines = []
+            for i, chunk in enumerate(context, 1):
+                meta = chunk.get("metadata", {})
+                source = meta.get("source", "inconnu")
+                vendor = meta.get("vendor_name", "")
+                title = meta.get("title", "")
+                text = chunk.get("text", "")
+                score = chunk.get("score", 0)
+
+                header = f"[{source}]"
+                if vendor:
+                    header += f" Fournisseur: {vendor}"
+                if title:
+                    header += f" - {title}"
+
+                context_lines.append(
+                    f"{i}. {header} (pertinence: {score:.2f})\n   {text[:300]}"
+                )
+            context_text = "\n\n".join(context_lines)
+        else:
+            context_text = "Aucune donnee pertinente trouvee dans la base."
+
         return (
             f"{SYSTEM_PROMPT}\n\n"
             f"Contexte disponible :\n{context_text}\n\n"
             f"Question de l'utilisateur : {message}\n\n"
-            f"Réponse :"
+            f"Reponds en citant les sources. Si l'information n'est pas dans le contexte, "
+            f"dis-le clairement.\n\n"
+            f"Reponse :"
         )
 
     async def _call_llm(self, prompt: str) -> str:

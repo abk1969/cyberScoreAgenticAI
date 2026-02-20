@@ -2,7 +2,7 @@
 
 Monitors for: score drops, grade degradation, critical findings,
 trend anomalies. Dispatches via email, webhook (Slack/Teams),
-and ServiceNow ticket creation.
+Splunk SIEM, and ServiceNow ticket creation.
 """
 
 import logging
@@ -11,6 +11,12 @@ from typing import Any
 
 from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
+from app.services.integrations import (
+    ServiceNowService,
+    SlackService,
+    SplunkService,
+    TeamsService,
+)
 
 logger = logging.getLogger("mh_cyberscore.agents.alert")
 
@@ -77,6 +83,10 @@ class AlertAgent(BaseAgent):
                     "description": finding.get("description", ""),
                 })
 
+        # Dispatch alerts to configured integrations
+        for alert in alerts:
+            await self._dispatch_to_integrations(alert, vendor_id)
+
         duration = time.monotonic() - start
         return AgentResult(
             agent_name=self.name,
@@ -85,6 +95,26 @@ class AlertAgent(BaseAgent):
             data={"alerts": alerts, "alert_count": len(alerts)},
             duration_seconds=round(duration, 2),
         )
+
+    async def _dispatch_to_integrations(
+        self, alert: dict[str, Any], vendor_id: str
+    ) -> None:
+        """Fan out alert to all configured integration channels."""
+        splunk = SplunkService()
+        if splunk.configured:
+            await splunk.push_alert_event(alert)
+
+        slack = SlackService()
+        if slack.configured:
+            await slack.send_alert(alert)
+
+        teams = TeamsService()
+        if teams.configured:
+            await teams.send_alert(alert)
+
+        snow = ServiceNowService()
+        if snow.configured and alert.get("severity") in ("critical", "high"):
+            await snow.create_incident(alert)
 
     @staticmethod
     def _score_to_grade(score: int) -> str:

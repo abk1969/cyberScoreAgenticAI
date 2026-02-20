@@ -14,6 +14,10 @@ import {
   MessageCircle,
   Settings,
   Globe,
+  Server,
+  Cloud,
+  FileCheck,
+  MonitorCheck,
 } from 'lucide-react'
 
 const navItems = [
@@ -25,6 +29,10 @@ const navItems = [
   { href: '/alerts', label: 'Alertes', icon: Bell },
   { href: '/supply-chain', label: 'Supply Chain', icon: Network },
   { href: '/compliance/dora', label: 'Conformité', icon: Shield },
+  { href: '/internal', label: 'Scoring Interne', icon: MonitorCheck },
+  { href: '/internal/ad', label: 'AD Rating', icon: Server },
+  { href: '/internal/m365', label: 'M365 Rating', icon: Cloud },
+  { href: '/internal/grc', label: 'GRC / PSSI', icon: FileCheck },
   { href: '/chat', label: 'Chat IA', icon: MessageCircle },
   { href: '/portal', label: 'Portail Fournisseur', icon: Globe },
   { href: '/admin', label: 'Admin', icon: Settings },

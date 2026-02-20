@@ -11,6 +11,19 @@ export const API_ROUTES = {
   alerts: "/api/v1/alerts",
   alertMarkRead: (id: string) => `/api/v1/alerts/${id}/read`,
   chat: "/api/v1/chat",
+  // VRM
+  vrmOnboard: "/api/v1/vrm/onboard",
+  vrmDisputes: "/api/v1/vrm/disputes",
+  vrmDisputesByVendor: (id: string) => `/api/v1/vrm/vendors/${id}/dispute`,
+  vrmDispute: (id: string) => `/api/v1/vrm/disputes/${id}`,
+  vrmRemediations: (id: string) => `/api/v1/vrm/vendors/${id}/remediation`,
+  // Questionnaires
+  questionnaireTemplates: "/api/v1/questionnaires/templates",
+  questionnaires: "/api/v1/questionnaires",
+  questionnaire: (id: string) => `/api/v1/questionnaires/${id}`,
+  questionnaireSend: (id: string) => `/api/v1/questionnaires/${id}/send`,
+  questionnaireRespond: (id: string) => `/api/v1/questionnaires/${id}/respond`,
+  questionnaireSmartAnswer: (id: string) => `/api/v1/questionnaires/${id}/smart-answer`,
 } as const;
 
 export const GRADE_COLORS: Record<Grade, string> = {

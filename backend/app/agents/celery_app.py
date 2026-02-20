@@ -34,7 +34,10 @@ celery_app.conf.update(
         "app.agents.chat_agent.*": {"queue": "chat"},
         "app.agents.alert_agent.*": {"queue": "default"},
         "app.agents.compliance_agent.*": {"queue": "default"},
+        "app.agents.questionnaire_agent.*": {"queue": "default"},
         "app.agents.orchestrator.*": {"queue": "default"},
+        "app.agents.ad_rating_agent.*": {"queue": "internal"},
+        "app.agents.m365_rating_agent.*": {"queue": "internal"},
     },
     beat_schedule={
         "rescan-tier1-daily": {
@@ -52,6 +55,25 @@ celery_app.conf.update(
             "schedule": crontab(hour=4, minute=0, day_of_month="1"),
             "args": (3,),
         },
+        # --- Scheduled report generation ---
+        "weekly-rssi-report": {
+            "task": "app.agents.report_agent.generate_report",
+            "schedule": crontab(hour=8, minute=0, day_of_week="monday"),
+            "args": ("rssi", "", "scheduler", "pdf"),
+            "options": {"queue": "reports"},
+        },
+        "monthly-comex-report": {
+            "task": "app.agents.report_agent.generate_report",
+            "schedule": crontab(hour=9, minute=0, day_of_month="1"),
+            "args": ("executive", "", "scheduler", "pptx"),
+            "options": {"queue": "reports"},
+        },
+        "daily-tier1-summary": {
+            "task": "app.agents.report_agent.generate_report",
+            "schedule": crontab(hour=7, minute=0),
+            "args": ("vendor_scorecard", "", "scheduler", "pdf"),
+            "options": {"queue": "reports"},
+        },
     },
 )
 
@@ -64,4 +86,7 @@ celery_app.autodiscover_tasks([
     "app.agents.report_agent",
     "app.agents.alert_agent",
     "app.agents.compliance_agent",
+    "app.agents.questionnaire_agent",
+    "app.agents.ad_rating_agent",
+    "app.agents.m365_rating_agent",
 ])

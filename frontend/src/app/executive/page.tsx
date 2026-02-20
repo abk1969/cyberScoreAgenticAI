@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { usePortfolioScores } from '@/hooks/useScoring'
 import { gradeToColor, scoreToGrade } from '@/lib/scoring-utils'
 import { api } from '@/lib/api'
+import { BenchmarkRadar } from '@/components/charts/BenchmarkRadar'
 import { TrendingUp, AlertTriangle, Shield } from 'lucide-react'
 
 interface ExecutiveData {
@@ -94,6 +95,16 @@ export default function ExecutivePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Benchmark Radar */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Benchmark Sectoriel</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BenchmarkRadar height={350} />
+        </CardContent>
+      </Card>
 
       {/* Top actions */}
       {(executive?.topActions ?? []).length > 0 && (

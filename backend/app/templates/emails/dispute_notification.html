@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mise a jour contestation - MH-CyberScore</title>
+</head>
+<body style="margin:0; padding:0; background:#F7F9FA; font-family:'Segoe UI',Arial,sans-serif; color:#2C3E50;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F9FA; padding:20px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <!-- Header -->
+        <tr>
+          <td style="background:#1B3A5C; padding:24px 32px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="color:#fff; font-size:20px; font-weight:700;">MH<span style="color:#2E75B6;">-CyberScore</span></td>
+                <td align="right" style="color:#fff; font-size:12px; opacity:0.85;">Mise a jour Contestation</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:32px;">
+            <p style="font-size:14px; margin:0 0 20px;">Bonjour {{ recipient_name }},</p>
+
+            <p style="font-size:13px; margin:0 0 16px;">
+              Le statut de votre contestation a ete mis a jour.
+            </p>
+
+            <div style="background:#F7F9FA; border-radius:8px; padding:20px; margin-bottom:24px;">
+              <table width="100%" style="font-size:12px;">
+                <tr>
+                  <td style="padding:4px 0; color:#64748B; width:140px;">Fournisseur:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ vendor_name }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Constat conteste:</td>
+                  <td style="padding:4px 0; font-weight:600;">{{ finding_title }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Statut precedent:</td>
+                  <td style="padding:4px 0;">{{ previous_status }}</td>
+                </tr>
+                <tr>
+                  <td style="padding:4px 0; color:#64748B;">Nouveau statut:</td>
+                  <td style="padding:4px 0; font-weight:700; color:{% if new_status == 'accepted' %}#27AE60{% elif new_status == 'rejected' %}#C0392B{% else %}#F39C12{% endif %};">{{ new_status|upper }}</td>
+                </tr>
+              </table>
+            </div>
+
+            {% if resolution_details %}
+            <div style="border-left:4px solid #2E75B6; padding:12px 16px; margin-bottom:24px; background:#F7F9FA; border-radius:0 6px 6px 0;">
+              <p style="font-size:11px; color:#64748B; margin:0 0 4px;">Details de la resolution:</p>
+              <p style="font-size:12px; margin:0;">{{ resolution_details }}</p>
+            </div>
+            {% endif %}
+
+            {% if score_impact %}
+            <div style="background:#EBF5FB; border-radius:8px; padding:16px; margin-bottom:24px;">
+              <p style="font-size:11px; color:#2E75B6; font-weight:600; margin:0 0 4px;">Impact sur le score:</p>
+              <p style="font-size:14px; font-weight:700; margin:0;">{{ score_impact }}</p>
+            </div>
+            {% endif %}
+
+            <table cellpadding="0" cellspacing="0"><tr>
+              <td style="background:#2E75B6; border-radius:6px; padding:12px 28px;">
+                <a href="{{ action_url }}" style="color:#fff; text-decoration:none; font-size:13px; font-weight:600;">Voir la contestation</a>
+              </td>
+            </tr></table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#F7F9FA; padding:16px 32px; border-top:1px solid #E2E8F0;">
+            <p style="font-size:10px; color:#94A3B8; margin:0; text-align:center;">
+              MH-CyberScore &mdash; Cet email est automatique, ne pas repondre.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
