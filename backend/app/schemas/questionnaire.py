@@ -129,3 +129,7 @@ class SmartAnswerResponse(BaseModel):
     suggested_answer: str
     confidence: float = Field(..., ge=0.0, le=1.0)
     reasoning: str | None = None
+
+
+# Resolve forward references
+QuestionnaireResponse.model_rebuild()

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -25,6 +26,11 @@ interface GradeDistributionProps {
 }
 
 export function GradeDistribution({ data, className }: GradeDistributionProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   const chartData = data.map((d) => ({
     ...d,
     fill: GRADE_COLORS[d.grade],

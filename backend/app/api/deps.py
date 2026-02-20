@@ -39,9 +39,13 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def get_current_user(
-    token: HTTPAuthorizationCredentials = Depends(security),
+    token: HTTPAuthorizationCredentials | None = Depends(
+        HTTPBearer(auto_error=not settings.debug)
+    ),
 ) -> UserClaims:
     """Decode and validate the JWT bearer token.
+
+    In debug mode (CS_DEBUG=true), returns a dev admin user if no token is provided.
 
     Args:
         token: The HTTP Bearer token from the Authorization header.
@@ -52,6 +56,22 @@ async def get_current_user(
     Raises:
         HTTPException: 401 if the token is invalid or expired.
     """
+    # Dev mode: no token → return mock admin user
+    if token is None and settings.debug:
+        return UserClaims(
+            sub="dev-admin",
+            email="admin@example.com",
+            name="Dev Admin",
+            role="admin",
+        )
+
+    if token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
     try:
         payload = jwt.decode(
             token.credentials,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   RadarChart,
   PolarGrid,
@@ -40,6 +41,11 @@ export function RiskRadar({
   height = 350,
   className,
 }: RiskRadarProps) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   const chartData = data.map((d) => ({
     ...d,
     shortLabel: DOMAIN_SHORT_LABELS[d.domain] ?? d.label,

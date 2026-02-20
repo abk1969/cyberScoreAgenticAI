@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   RadarChart,
   PolarGrid,
@@ -38,6 +38,9 @@ interface BenchmarkRadarProps {
 }
 
 export function BenchmarkRadar({ height = 380, className }: BenchmarkRadarProps) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   const [sector, setSector] = useState('mutuelle')
   const { data: benchmark, isLoading } = usePortfolioBenchmark(sector)
 
@@ -46,6 +49,8 @@ export function BenchmarkRadar({ height = 380, className }: BenchmarkRadarProps)
     portfolio: d.portfolio_avg ?? 0,
     sector: d.sector_avg,
   }))
+
+  if (!mounted) return null
 
   return (
     <div className={className}>

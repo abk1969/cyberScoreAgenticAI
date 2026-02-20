@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 fastapi = "^0.115"
 uvicorn = {version = "^0.34", extras = ["standard"]}
 sqlalchemy = "^2.0"
@@ -45,7 +45,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -55,7 +55,7 @@ ignore = ["D203", "D213", "COM812", "ISC001"]
 "tests/**" = ["S101", "D100", "D103", "D104"]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.11"
 strict = true
 plugins = ["pydantic.mypy"]
 

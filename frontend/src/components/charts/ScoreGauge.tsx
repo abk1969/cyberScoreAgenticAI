@@ -20,7 +20,10 @@ const GAUGE_ZONES = [
 ];
 
 export function ScoreGauge({ score, maxScore = 1000, size = 240, className }: ScoreGaugeProps) {
+  const [mounted, setMounted] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const duration = 1000;
@@ -38,6 +41,8 @@ export function ScoreGauge({ score, maxScore = 1000, size = 240, className }: Sc
 
     return () => clearInterval(timer);
   }, [score]);
+
+  if (!mounted) return null;
 
   const grade = scoreToGrade(score);
   const gradeColor = gradeToColor(grade);

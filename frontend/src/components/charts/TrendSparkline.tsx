@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
 
 interface TrendSparklineProps {
@@ -17,7 +18,10 @@ export function TrendSparkline({
   width = 120,
   className,
 }: TrendSparklineProps) {
-  if (data.length < 2) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || data.length < 2) return null;
 
   const scores = data.map((d) => d.score);
   const min = Math.min(...scores);

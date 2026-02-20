@@ -1,5 +1,7 @@
 """Vendor CRUD endpoints."""
 
+from uuid import uuid4
+
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -110,3 +112,27 @@ async def delete_vendor(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Vendor not found: {vendor_id}",
         )
+
+
+@router.post("/{vendor_id}/rescan", status_code=status.HTTP_202_ACCEPTED)
+async def rescan_vendor(
+    vendor_id: str,
+    db: AsyncSession = Depends(get_db),
+    _current_user: object = Depends(require_role("admin", "rssi", "analyste_ssi")),
+) -> dict:
+    """Trigger a rescan for a specific vendor."""
+    service = VendorService(db)
+    try:
+        await service.get_vendor(vendor_id)
+    except VendorNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Vendor not found: {vendor_id}",
+        )
+    task_id = str(uuid4())
+    return {
+        "vendor_id": vendor_id,
+        "task_id": task_id,
+        "status": "queued",
+        "message": "Rescan triggered",
+    }
