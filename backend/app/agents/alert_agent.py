@@ -18,7 +18,7 @@ from app.services.integrations import (
     TeamsService,
 )
 
-logger = logging.getLogger("mh_cyberscore.agents.alert")
+logger = logging.getLogger("cyberscore.agents.alert")
 
 SCORE_DROP_THRESHOLD = 50
 CRITICAL_SEVERITIES = {"critical", "high"}
@@ -143,8 +143,8 @@ class AlertAgent(BaseAgent):
         from app.config import settings
 
         msg = EmailMessage()
-        msg["Subject"] = f"[MH-CyberScore] {alert.get('severity', 'info').upper()}: {alert.get('title', 'Alerte')}"
-        msg["From"] = getattr(settings, "smtp_from", "noreply@malakoffhumanis.com")
+        msg["Subject"] = f"[CyberScore] {alert.get('severity', 'info').upper()}: {alert.get('title', 'Alerte')}"
+        msg["From"] = getattr(settings, "smtp_from", "noreply@example.com")
         msg["To"] = ", ".join(recipients)
         msg.set_content(alert.get("description", ""))
 
@@ -215,7 +215,7 @@ class AlertAgent(BaseAgent):
 
         url = f"https://{instance}.service-now.com/api/now/table/incident"
         payload = {
-            "short_description": alert.get("title", "MH-CyberScore Alert"),
+            "short_description": alert.get("title", "CyberScore Alert"),
             "description": alert.get("description", ""),
             "urgency": "1" if alert.get("severity") == "critical" else "2",
             "impact": "2",

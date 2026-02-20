@@ -8,7 +8,7 @@ from typing import Any
 from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 
-logger = logging.getLogger("mh_cyberscore.agents.questionnaire")
+logger = logging.getLogger("cyberscore.agents.questionnaire")
 
 
 class QuestionnaireAgent(BaseAgent):

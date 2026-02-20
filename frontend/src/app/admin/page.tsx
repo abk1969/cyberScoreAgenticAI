@@ -311,7 +311,7 @@ export default function AdminPage() {
                     Attention : les scans OSINT utilisent votre IP reelle.
                   </p>
                   <p className="mt-1 text-xs text-orange-600">
-                    Configurez <code>MH_PROXY_MODE=tor</code> dans .env pour activer l&apos;anonymisation.
+                    Configurez <code>CS_PROXY_MODE=tor</code> dans .env pour activer l&apos;anonymisation.
                   </p>
                 </div>
               )}

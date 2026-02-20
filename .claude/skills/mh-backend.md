@@ -1,7 +1,7 @@
-# MH-CyberScore Backend Skill
+# CyberScore Backend Skill
 
 ## Description
-Guide for building the MH-CyberScore FastAPI backend with SQLAlchemy, Pydantic, Alembic, and Celery. Use when creating API endpoints, database models, schemas, services, or any Python backend code for this project.
+Guide for building the CyberScore FastAPI backend with SQLAlchemy, Pydantic, Alembic, and Celery. Use when creating API endpoints, database models, schemas, services, or any Python backend code for this project.
 
 ## Stack
 - **Python 3.12+** with type hints everywhere
@@ -23,7 +23,7 @@ Guide for building the MH-CyberScore FastAPI backend with SQLAlchemy, Pydantic, 
 - Docstrings: Google style
 - Tests: pytest with coverage > 80%
 - Async: use async/await for ALL I/O (httpx, DB queries)
-- Error handling: custom exceptions inheriting from `MHCyberScoreError`
+- Error handling: custom exceptions inheriting from `CyberScoreError`
 
 ### Naming
 - Classes: PascalCase (VendorScoring, OsintAgent)
@@ -75,7 +75,7 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="MH-CyberScore API",
+        title="CyberScore API",
         version="1.0.0",
         docs_url="/api/docs" if settings.debug else None,
         lifespan=lifespan,
@@ -98,14 +98,14 @@ app = create_app()
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="MH_")
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="CS_")
 
     debug: bool = False
     database_url: str
     redis_url: str = "redis://localhost:6379/0"
     celery_broker_url: str = "redis://localhost:6379/1"
     keycloak_url: str
-    keycloak_realm: str = "mh-cyberscore"
+    keycloak_realm: str = "cyberscore"
     cors_origins: list[str] = ["http://localhost:3000"]
     jwt_secret_key: str
     jwt_algorithm: str = "RS256"
@@ -197,7 +197,7 @@ async def create_vendor(
 - NO AWS, GCP, Azure for scoring data → OVHcloud SecNumCloud or Scaleway
 - NO direct OpenAI/Anthropic US APIs → self-hosted LLM via vLLM
 - NO US CDN (Cloudflare) → European alternatives
-- E2E encryption with MH-managed keys (HSM)
+- E2E encryption with organization-managed keys (HSM)
 - All logs on French soil exclusively
 - NEVER hardcode secrets → use environment variables
 

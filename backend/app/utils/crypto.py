@@ -1,4 +1,4 @@
-"""Encryption utilities for MH-CyberScore.
+"""Encryption utilities for CyberScore.
 
 Provides AES-256-GCM encryption for data at rest and
 helper functions for secure token generation.

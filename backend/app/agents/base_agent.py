@@ -1,4 +1,4 @@
-"""Base agent class for all MH-CyberScore AI agents.
+"""Base agent class for all CyberScore AI agents.
 
 Provides rate limiting, timeout, retry with exponential backoff,
 structured logging, audit trail for every external API call, and
@@ -22,7 +22,7 @@ from tenacity import (
 
 from app.utils.exceptions import AgentError
 
-logger = logging.getLogger("mh_cyberscore.agents")
+logger = logging.getLogger("cyberscore.agents")
 
 
 @dataclass
@@ -39,7 +39,7 @@ class AgentResult:
 
 
 class BaseAgent(ABC):
-    """Abstract base class for all MH-CyberScore agents.
+    """Abstract base class for all CyberScore agents.
 
     Provides:
         - Rate limiting: 1 request/sec per external API
@@ -62,7 +62,7 @@ class BaseAgent(ABC):
         self._semaphore = asyncio.Semaphore(int(rate_limit_per_sec))
         self._api_call_count = 0
         self._audit_log: list[dict[str, Any]] = []
-        self.logger = logging.getLogger(f"mh_cyberscore.agents.{name}")
+        self.logger = logging.getLogger(f"cyberscore.agents.{name}")
 
     @abstractmethod
     async def execute(self, vendor_id: str, **kwargs: Any) -> AgentResult:

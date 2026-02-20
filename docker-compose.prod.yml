@@ -64,7 +64,7 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
     restart: unless-stopped
     environment:
-      MH_DEBUG: "false"
+      CS_DEBUG: "false"
     volumes: []
     deploy:
       resources:
@@ -91,7 +91,7 @@ services:
   celery-worker:
     restart: unless-stopped
     environment:
-      MH_DEBUG: "false"
+      CS_DEBUG: "false"
     volumes: []
     deploy:
       resources:
@@ -105,7 +105,7 @@ services:
   celery-beat:
     restart: unless-stopped
     environment:
-      MH_DEBUG: "false"
+      CS_DEBUG: "false"
     volumes: []
     deploy:
       resources:

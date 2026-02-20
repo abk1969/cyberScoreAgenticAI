@@ -45,7 +45,7 @@ export function Sidebar() {
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center border-b border-gray-200 px-6">
         <h1 className="text-xl font-bold text-[#1B3A5C]">
-          MH-CyberScore
+          CyberScore
         </h1>
       </div>
       <nav className="space-y-1 p-4">

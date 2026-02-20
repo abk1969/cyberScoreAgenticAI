@@ -7,7 +7,7 @@ import httpx
 
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.integrations.slack")
+logger = logging.getLogger("cyberscore.integrations.slack")
 
 SEVERITY_EMOJI = {
     "critical": ":rotating_light:",
@@ -50,7 +50,7 @@ class SlackService:
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": f"{emoji} MH-CyberScore Alert",
+                        "text": f"{emoji} CyberScore Alert",
                     },
                 },
                 {
@@ -82,7 +82,7 @@ class SlackService:
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": ":bar_chart: MH-CyberScore Report Available",
+                        "text": ":bar_chart: CyberScore Report Available",
                     },
                 },
                 {
@@ -111,7 +111,7 @@ class SlackService:
             async with httpx.AsyncClient(timeout=10.0) as client:
                 resp = await client.post(
                     self.webhook_url,
-                    json={"text": "MH-CyberScore connectivity test :white_check_mark:"},
+                    json={"text": "CyberScore connectivity test :white_check_mark:"},
                 )
                 resp.raise_for_status()
             return {"success": True, "message": "Slack webhook connection OK"}

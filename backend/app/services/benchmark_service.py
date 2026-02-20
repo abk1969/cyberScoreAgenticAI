@@ -7,7 +7,7 @@ sectors and compares vendor or portfolio scores against sector averages.
 import logging
 from typing import Any
 
-logger = logging.getLogger("mh_cyberscore.services.benchmark")
+logger = logging.getLogger("cyberscore.services.benchmark")
 
 # Reference benchmark data per sector (percentiles & averages per domain).
 # Values represent typical scores observed across French entities in each sector.

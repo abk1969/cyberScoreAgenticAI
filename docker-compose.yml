@@ -7,15 +7,15 @@ services:
   postgres:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_DB: mh_cyberscore
-      POSTGRES_USER: ${DB_USER:-mhcs}
+      POSTGRES_DB: cyberscore
+      POSTGRES_USER: ${DB_USER:-csadmin}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-mhcs} -d mh_cyberscore"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-csadmin} -d cyberscore"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,7 +45,7 @@ services:
     image: minio/minio:latest
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-mhcs_minio}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-csadmin_minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports:
       - "9000:9000"
@@ -63,8 +63,8 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/mh_cyberscore
-      KC_DB_USERNAME: ${DB_USER:-mhcs}
+      KC_DB_URL: jdbc:postgresql://postgres:5432/cyberscore
+      KC_DB_USERNAME: ${DB_USER:-csadmin}
       KC_DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "8080:8080"
@@ -91,26 +91,26 @@ services:
       dockerfile: Dockerfile
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      MH_DATABASE_URL: postgresql+asyncpg://${DB_USER:-mhcs}:${DB_PASSWORD}@postgres:5432/mh_cyberscore
-      MH_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
-      MH_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
-      MH_KEYCLOAK_URL: http://keycloak:8080
-      MH_KEYCLOAK_REALM: ${MH_KEYCLOAK_REALM:-mh-cyberscore}
-      MH_KEYCLOAK_CLIENT_ID: ${MH_KEYCLOAK_CLIENT_ID:-mh-cyberscore-api}
-      MH_KEYCLOAK_CLIENT_SECRET: ${MH_KEYCLOAK_CLIENT_SECRET}
-      MH_JWT_SECRET_KEY: ${MH_JWT_SECRET_KEY}
-      MH_JWT_ALGORITHM: ${MH_JWT_ALGORITHM:-RS256}
-      MH_VLLM_URL: ${MH_VLLM_URL:-http://localhost:8001}
-      MH_LLM_MODEL: ${MH_LLM_MODEL:-mistralai/Mistral-Large-Instruct-2407}
-      MH_QDRANT_URL: http://qdrant:6333
-      MH_MINIO_ENDPOINT: minio:9000
-      MH_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-mhcs_minio}
-      MH_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-      MH_MINIO_BUCKET: ${MH_MINIO_BUCKET:-mh-cyberscore}
-      MH_PROXY_MODE: ${MH_PROXY_MODE:-tor}
-      MH_PROXY_TOR_URL: socks5://tor:9050
-      MH_DEBUG: "true"
-      MH_CORS_ORIGINS: '["http://localhost:3000"]'
+      CS_DATABASE_URL: postgresql+asyncpg://${DB_USER:-csadmin}:${DB_PASSWORD}@postgres:5432/cyberscore
+      CS_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      CS_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
+      CS_KEYCLOAK_URL: http://keycloak:8080
+      CS_KEYCLOAK_REALM: ${CS_KEYCLOAK_REALM:-cyberscore}
+      CS_KEYCLOAK_CLIENT_ID: ${CS_KEYCLOAK_CLIENT_ID:-cyberscore-api}
+      CS_KEYCLOAK_CLIENT_SECRET: ${CS_KEYCLOAK_CLIENT_SECRET}
+      CS_JWT_SECRET_KEY: ${CS_JWT_SECRET_KEY}
+      CS_JWT_ALGORITHM: ${CS_JWT_ALGORITHM:-RS256}
+      CS_VLLM_URL: ${CS_VLLM_URL:-http://localhost:8001}
+      CS_LLM_MODEL: ${CS_LLM_MODEL:-mistralai/Mistral-Large-Instruct-2407}
+      CS_QDRANT_URL: http://qdrant:6333
+      CS_MINIO_ENDPOINT: minio:9000
+      CS_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-csadmin_minio}
+      CS_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      CS_MINIO_BUCKET: ${CS_MINIO_BUCKET:-cyberscore}
+      CS_PROXY_MODE: ${CS_PROXY_MODE:-tor}
+      CS_PROXY_TOR_URL: socks5://tor:9050
+      CS_DEBUG: "true"
+      CS_CORS_ORIGINS: '["http://localhost:3000"]'
     ports:
       - "8000:8000"
     volumes:
@@ -148,23 +148,23 @@ services:
       dockerfile: Dockerfile
     command: celery -A app.agents.celery_app worker -l info -Q osint,darkweb,nthparty,reports,chat,internal,default
     environment:
-      MH_DATABASE_URL: postgresql+asyncpg://${DB_USER:-mhcs}:${DB_PASSWORD}@postgres:5432/mh_cyberscore
-      MH_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
-      MH_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
-      MH_KEYCLOAK_URL: http://keycloak:8080
-      MH_KEYCLOAK_REALM: ${MH_KEYCLOAK_REALM:-mh-cyberscore}
-      MH_KEYCLOAK_CLIENT_ID: ${MH_KEYCLOAK_CLIENT_ID:-mh-cyberscore-api}
-      MH_KEYCLOAK_CLIENT_SECRET: ${MH_KEYCLOAK_CLIENT_SECRET}
-      MH_VLLM_URL: ${MH_VLLM_URL:-http://localhost:8001}
-      MH_LLM_MODEL: ${MH_LLM_MODEL:-mistralai/Mistral-Large-Instruct-2407}
-      MH_QDRANT_URL: http://qdrant:6333
-      MH_MINIO_ENDPOINT: minio:9000
-      MH_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-mhcs_minio}
-      MH_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
-      MH_MINIO_BUCKET: ${MH_MINIO_BUCKET:-mh-cyberscore}
-      MH_PROXY_MODE: ${MH_PROXY_MODE:-tor}
-      MH_PROXY_TOR_URL: socks5://tor:9050
-      MH_DEBUG: "true"
+      CS_DATABASE_URL: postgresql+asyncpg://${DB_USER:-csadmin}:${DB_PASSWORD}@postgres:5432/cyberscore
+      CS_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      CS_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
+      CS_KEYCLOAK_URL: http://keycloak:8080
+      CS_KEYCLOAK_REALM: ${CS_KEYCLOAK_REALM:-cyberscore}
+      CS_KEYCLOAK_CLIENT_ID: ${CS_KEYCLOAK_CLIENT_ID:-cyberscore-api}
+      CS_KEYCLOAK_CLIENT_SECRET: ${CS_KEYCLOAK_CLIENT_SECRET}
+      CS_VLLM_URL: ${CS_VLLM_URL:-http://localhost:8001}
+      CS_LLM_MODEL: ${CS_LLM_MODEL:-mistralai/Mistral-Large-Instruct-2407}
+      CS_QDRANT_URL: http://qdrant:6333
+      CS_MINIO_ENDPOINT: minio:9000
+      CS_MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-csadmin_minio}
+      CS_MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      CS_MINIO_BUCKET: ${CS_MINIO_BUCKET:-cyberscore}
+      CS_PROXY_MODE: ${CS_PROXY_MODE:-tor}
+      CS_PROXY_TOR_URL: socks5://tor:9050
+      CS_DEBUG: "true"
     depends_on:
       - backend
       - redis
@@ -176,10 +176,10 @@ services:
       dockerfile: Dockerfile
     command: celery -A app.agents.celery_app beat -l info
     environment:
-      MH_DATABASE_URL: postgresql+asyncpg://${DB_USER:-mhcs}:${DB_PASSWORD}@postgres:5432/mh_cyberscore
-      MH_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
-      MH_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
-      MH_DEBUG: "true"
+      CS_DATABASE_URL: postgresql+asyncpg://${DB_USER:-csadmin}:${DB_PASSWORD}@postgres:5432/cyberscore
+      CS_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      CS_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
+      CS_DEBUG: "true"
     depends_on:
       - redis
 
@@ -211,4 +211,4 @@ volumes:
 
 networks:
   default:
-    name: mh-cyberscore-network
+    name: cyberscore-network

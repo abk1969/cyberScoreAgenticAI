@@ -37,7 +37,7 @@ from app.tools.reputation_tool import ReputationTool
 from app.tools.shodan_tool import ShodanTool
 from app.tools.ssl_tool import SSLTool
 
-logger = logging.getLogger("mh_cyberscore.agents.osint")
+logger = logging.getLogger("cyberscore.agents.osint")
 
 
 class OSINTAgent(BaseAgent):

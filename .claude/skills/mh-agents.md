@@ -1,7 +1,7 @@
-# MH-CyberScore AI Agents Skill
+# CyberScore AI Agents Skill
 
 ## Description
-Guide for building the MH-CyberScore multi-agent system — Celery workers piloted by LLM (Mistral/LLaMA self-hosted). Use when creating OSINT agents, dark web monitors, Nth-party detection, chat agents, report generators, or any agentic AI component.
+Guide for building the CyberScore multi-agent system — Celery workers piloted by LLM (Mistral/LLaMA self-hosted). Use when creating OSINT agents, dark web monitors, Nth-party detection, chat agents, report generators, or any agentic AI component.
 
 ## Architecture Overview
 
@@ -12,7 +12,7 @@ ORCHESTRATOR AGENT (Chef d'orchestre)
 ├── Nth-Party Agent (Supply chain mapping)
 ├── Questionnaire Agent (Smart Answer)
 ├── Report Agent (PDF/PPTX/Excel generation)
-├── Chat Agent (ChatMH - RAG chatbot)
+├── Chat Agent (CyberChat - RAG chatbot)
 ├── Alert Agent (Anomaly detection)
 └── Compliance Agent (DORA/NIS2 mapping)
 ```
@@ -31,7 +31,7 @@ import httpx
 logger = logging.getLogger(__name__)
 
 class BaseAgent(Task, ABC):
-    """Base class for all MH-CyberScore AI agents."""
+    """Base class for all CyberScore AI agents."""
 
     abstract = True
     max_retries = 3
@@ -138,7 +138,7 @@ Map vendor subcontracting chain to identify concentration risks (DORA art. 28).
 1. DNS/MX/headers analysis to identify cloud providers (AWS, Azure, GCP, OVH)
 2. TLS certificate analysis to identify CDNs and hosters
 3. Legal scraping of public pages ("privacy policy" / "subcontractors")
-4. Cross-reference with internal MH vendor database
+4. Cross-reference with internal vendor database
 5. Build N-1, N-2, N-3 dependency graph
 
 ### Output
@@ -147,7 +147,7 @@ Map vendor subcontracting chain to identify concentration risks (DORA art. 28).
 - Alert if > 30% concentration on a single provider
 - Visualization: treemap or sankey diagram
 
-## Chat Agent (ChatMH)
+## Chat Agent (CyberChat)
 
 ### Architecture
 - RAG (Retrieval Augmented Generation) on Qdrant vector DB
@@ -166,7 +166,7 @@ Map vendor subcontracting chain to identify concentration risks (DORA art. 28).
 - PDF generation via WeasyPrint (HTML templates → PDF)
 - PPTX generation via python-pptx (branded PowerPoint templates)
 - Excel generation via openpyxl (tabular data)
-- Customization: MH logo, brand guidelines, templates by audience
+- Customization: company logo, brand guidelines, templates by audience
 
 ### Pre-built Templates
 1. Executive COMEX Report (5 slides max)
@@ -182,7 +182,7 @@ from celery import Celery
 from app.config import settings
 
 celery_app = Celery(
-    "mh_cyberscore",
+    "cyberscore",
     broker=settings.celery_broker_url,
     backend=settings.redis_url,
 )

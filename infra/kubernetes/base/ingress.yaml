@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mh-cyberscore-ingress
-  namespace: mh-cyberscore
+  name: cyberscore-ingress
+  namespace: cyberscore
   labels:
-    app: mh-cyberscore
+    app: cyberscore
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -18,11 +18,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - cyberscore.malakoffhumanis.com
-        - api.cyberscore.malakoffhumanis.com
-      secretName: mh-cyberscore-tls
+        - cyberscore.cyberscore.example.com
+        - api.cyberscore.cyberscore.example.com
+      secretName: cyberscore-tls
   rules:
-    - host: api.cyberscore.malakoffhumanis.com
+    - host: api.cyberscore.cyberscore.example.com
       http:
         paths:
           - path: /
@@ -32,7 +32,7 @@ spec:
                 name: backend
                 port:
                   number: 8000
-    - host: cyberscore.malakoffhumanis.com
+    - host: cyberscore.cyberscore.example.com
       http:
         paths:
           - path: /

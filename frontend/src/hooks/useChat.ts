@@ -16,7 +16,7 @@ export function useChat() {
     {
       id: '0',
       role: 'assistant',
-      content: 'Bonjour, je suis ChatMH, votre assistant IA cyber scoring. Comment puis-je vous aider ?',
+      content: 'Bonjour, je suis CyberChat, votre assistant IA cyber scoring. Comment puis-je vous aider ?',
       timestamp: new Date().toISOString(),
     },
   ])

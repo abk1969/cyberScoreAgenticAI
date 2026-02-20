@@ -6,8 +6,8 @@ import { ChatWidget } from '@/components/shared/ChatWidget'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'MH-CyberScore',
-  description: 'Plateforme souveraine de cyber scoring et VRM — Malakoff Humanis',
+  title: 'CyberScore',
+  description: 'Plateforme souveraine de cyber scoring et VRM',
 }
 
 export default function RootLayout({

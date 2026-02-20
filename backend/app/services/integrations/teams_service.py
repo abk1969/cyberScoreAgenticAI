@@ -7,7 +7,7 @@ import httpx
 
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.integrations.teams")
+logger = logging.getLogger("cyberscore.integrations.teams")
 
 SEVERITY_COLOR = {
     "critical": "attention",
@@ -63,7 +63,7 @@ class TeamsService:
                     "type": "TextBlock",
                     "size": "large",
                     "weight": "bolder",
-                    "text": "MH-CyberScore Alert",
+                    "text": "CyberScore Alert",
                     "color": color,
                 },
                 {
@@ -101,7 +101,7 @@ class TeamsService:
                     "type": "TextBlock",
                     "size": "large",
                     "weight": "bolder",
-                    "text": "MH-CyberScore Report Available",
+                    "text": "CyberScore Report Available",
                 },
                 {
                     "type": "FactSet",
@@ -128,7 +128,7 @@ class TeamsService:
             "body": [
                 {
                     "type": "TextBlock",
-                    "text": "MH-CyberScore connectivity test OK",
+                    "text": "CyberScore connectivity test OK",
                     "color": "good",
                 }
             ],

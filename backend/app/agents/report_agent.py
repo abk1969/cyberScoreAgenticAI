@@ -14,7 +14,7 @@ from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.agents.report")
+logger = logging.getLogger("cyberscore.agents.report")
 
 REPORT_TYPES = {
     "executive": {
@@ -225,7 +225,7 @@ class ReportAgent(BaseAgent):
                         "subcontractors": ["AWS EU", "OVH Backup"],
                         "certifications": ["ISO 27001", "SOC 2", "HDS"],
                         "data_location": "France / UE", "exit_plan": True,
-                        "last_audit": "2024-06-15", "mh_score": 720,
+                        "last_audit": "2024-06-15", "score": 720,
                     },
                     {
                         "name": "DataHost SARL", "ict_function": "Hebergement Donnees Sante",
@@ -234,7 +234,7 @@ class ReportAgent(BaseAgent):
                         "subcontractors": [],
                         "certifications": ["ISO 27001", "HDS", "SecNumCloud"],
                         "data_location": "France", "exit_plan": True,
-                        "last_audit": "2024-09-20", "mh_score": 810,
+                        "last_audit": "2024-09-20", "score": 810,
                     },
                     {
                         "name": "NetServ SA", "ict_function": "Reseau & Telecommunications",
@@ -243,7 +243,7 @@ class ReportAgent(BaseAgent):
                         "subcontractors": ["Orange Business"],
                         "certifications": ["ISO 27001"],
                         "data_location": "France", "exit_plan": False,
-                        "last_audit": "2023-12-10", "mh_score": 540,
+                        "last_audit": "2023-12-10", "score": 540,
                     },
                 ],
             )
@@ -274,7 +274,7 @@ class ReportAgent(BaseAgent):
     async def _generate_pptx(
         self, report_type: str, vendor_id: str
     ) -> str:
-        """Generate branded PPTX via python-pptx with MH colors."""
+        """Generate branded PPTX via python-pptx."""
         from pptx import Presentation
         from pptx.dml.color import RGBColor
         from pptx.enum.text import PP_ALIGN
@@ -311,7 +311,7 @@ class ReportAgent(BaseAgent):
         tf = title_box.text_frame
         p = tf.paragraphs[0]
         run = p.add_run()
-        run.text = "MH-CyberScore"
+        run.text = "CyberScore"
         run.font.size = Pt(32)
         run.font.bold = True
         run.font.color.rgb = WHITE

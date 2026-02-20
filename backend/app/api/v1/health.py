@@ -13,7 +13,7 @@ async def health_check() -> dict:
     """Return the health status of the API and its dependencies."""
     status_report: dict = {
         "status": "ok",
-        "service": "mh-cyberscore-api",
+        "service": "cyberscore-api",
         "dependencies": {},
     }
 

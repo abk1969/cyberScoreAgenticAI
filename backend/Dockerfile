@@ -1,4 +1,4 @@
-# MH-CyberScore Backend — Multi-stage Docker build
+# CyberScore Backend — Multi-stage Docker build
 # Python 3.12 on Debian slim for WeasyPrint system dependencies
 
 # Stage 1: Builder
@@ -48,8 +48,8 @@ COPY --from=builder /install /usr/local
 COPY . .
 
 # Create non-root user
-RUN groupadd -r mhcs && useradd -r -g mhcs mhcs
-USER mhcs
+RUN groupadd -r csadmin && useradd -r -g csadmin csadmin
+USER csadmin
 
 # Expose port
 EXPOSE 8000

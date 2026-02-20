@@ -7,7 +7,7 @@ Cartographier la chaîne de sous-traitance des fournisseurs pour identifier les 
 1. Analyse DNS/MX → identifier providers cloud (AWS, Azure, GCP, OVH, Scaleway)
 2. Analyse certificats TLS → identifier CDN (Cloudflare, Akamai, Fastly) et hébergeurs
 3. Analyse mentions légales → sous-traitants déclarés (scraping légal pages publiques)
-4. Croisement avec base interne MH
+4. Croisement avec base interne
 5. Construction graphe N-1, N-2, N-3
 
 ## Seuil de concentration

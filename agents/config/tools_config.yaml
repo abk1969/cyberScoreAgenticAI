@@ -1,4 +1,4 @@
-# MH-CyberScore — Tools Configuration
+# CyberScore — Tools Configuration
 # External API endpoints, rate limits, and quotas
 
 tools:
@@ -9,7 +9,7 @@ tools:
     max_retries: 3
     monthly_quota: 100        # Free tier: 100 queries/month
     auth_type: "query_param"  # key=API_KEY
-    env_var: "MH_SHODAN_API_KEY"
+    env_var: "CS_SHODAN_API_KEY"
 
   censys:
     base_url: "https://search.censys.io/api"
@@ -17,8 +17,8 @@ tools:
     timeout_seconds: 30
     max_retries: 3
     auth_type: "basic"        # API_ID:API_SECRET
-    env_var_id: "MH_CENSYS_API_ID"
-    env_var_secret: "MH_CENSYS_API_SECRET"
+    env_var_id: "CS_CENSYS_API_ID"
+    env_var_secret: "CS_CENSYS_API_SECRET"
 
   dns:
     # No external API — uses dnspython direct resolution
@@ -52,7 +52,7 @@ tools:
     timeout_seconds: 15
     max_retries: 2
     auth_type: "header"       # hibp-api-key: KEY
-    env_var: "MH_HIBP_API_KEY"
+    env_var: "CS_HIBP_API_KEY"
 
   abuseipdb:
     base_url: "https://api.abuseipdb.com/api/v2"
@@ -61,7 +61,7 @@ tools:
     max_retries: 3
     daily_quota: 1000
     auth_type: "header"       # Key: API_KEY
-    env_var: "MH_ABUSEIPDB_API_KEY"
+    env_var: "CS_ABUSEIPDB_API_KEY"
 
   virustotal:
     base_url: "https://www.virustotal.com/api/v3"
@@ -70,7 +70,7 @@ tools:
     max_retries: 2
     daily_quota: 500
     auth_type: "header"       # x-apikey: KEY
-    env_var: "MH_VIRUSTOTAL_API_KEY"
+    env_var: "CS_VIRUSTOTAL_API_KEY"
 
   ct_logs:
     base_url: "https://crt.sh"

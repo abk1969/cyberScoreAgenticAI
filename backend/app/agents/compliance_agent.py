@@ -12,7 +12,7 @@ from typing import Any
 from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 
-logger = logging.getLogger("mh_cyberscore.agents.compliance")
+logger = logging.getLogger("cyberscore.agents.compliance")
 
 DORA_REQUIREMENTS = {
     "art5_governance": "Gouvernance et organisation (Art. 5-6)",

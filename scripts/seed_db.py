@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MH-CyberScore Database Seed Script.
+CyberScore Database Seed Script.
 
 Seeds the database with 50 sample vendors (realistic French companies),
 sample scores, and sample findings for development and testing.
@@ -18,7 +18,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql+asyncpg://mhcs:changeme_db_password@localhost:5432/mh_cyberscore"
+DATABASE_URL = "postgresql+asyncpg://csadmin:changeme_db_password@localhost:5432/cyberscore"
 
 # --- Sample French Companies ---
 
@@ -229,7 +229,7 @@ async def seed_findings(session: AsyncSession, vendors: list[dict]) -> None:
 
 
 async def main() -> None:
-    print("MH-CyberScore Database Seeder")
+    print("CyberScore Database Seeder")
     print("=" * 40)
 
     engine = create_async_engine(DATABASE_URL, echo=False)

@@ -1,4 +1,4 @@
-"""Chat API — ChatMH RAG-powered AI assistant endpoints."""
+"""Chat API — CyberChat RAG-powered AI assistant endpoints."""
 
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -24,7 +24,7 @@ async def send_chat_message(
     db: AsyncSession = Depends(get_db),
     user: UserClaims = Depends(get_current_user),
 ) -> ChatResponse:
-    """Send a message to ChatMH and get an AI response with sources.
+    """Send a message to CyberChat and get an AI response with sources.
 
     Uses RAG to search relevant context from vendor scores, findings,
     and documents before generating the response.

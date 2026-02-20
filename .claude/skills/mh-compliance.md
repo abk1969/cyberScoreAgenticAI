@@ -1,7 +1,7 @@
-# MH-CyberScore Compliance & Security Skill
+# CyberScore Compliance & Security Skill
 
 ## Description
-Guide for implementing security, compliance (DORA, RGPD, NIS2, AI Act), and sovereignty requirements in MH-CyberScore. Use when building auth systems, RBAC, audit trails, encryption, DORA register, or any compliance-related feature.
+Guide for implementing security, compliance (DORA, RGPD, NIS2, AI Act), and sovereignty requirements in CyberScore. Use when building auth systems, RBAC, audit trails, encryption, DORA register, or any compliance-related feature.
 
 ## Regulatory Framework
 
@@ -31,7 +31,7 @@ Guide for implementing security, compliance (DORA, RGPD, NIS2, AI Act), and sove
 
 ### Keycloak Configuration
 ```
-- SSO via Keycloak 24 (OIDC/SAML integrated with AD Malakoff Humanis)
+- SSO via Keycloak 24 (OIDC/SAML integrated with AD votre organisation)
 - MFA mandatory for ALL accounts
 - Session timeout: 30 min inactivity, 8h max
 - API: JWT signed RS256, key rotation every 90 days
@@ -196,7 +196,7 @@ For EVERY new feature or integration, verify:
 - [ ] No data transits through US-controlled servers
 - [ ] No direct US API calls without sovereign proxy
 - [ ] No US CDN for serving content
-- [ ] Encryption keys managed by MH (not cloud provider)
+- [ ] Encryption keys managed by the organization (not cloud provider)
 - [ ] Logs stored on French soil only
 - [ ] Dependencies from European registries preferred
 - [ ] RGPD processing register updated

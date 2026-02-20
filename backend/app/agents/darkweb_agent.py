@@ -26,7 +26,7 @@ from app.services.proxy_service import get_scan_http_client
 from app.agents.celery_app import celery_app
 from app.tools.hibp_tool import HIBPTool
 
-logger = logging.getLogger("mh_cyberscore.agents.darkweb")
+logger = logging.getLogger("cyberscore.agents.darkweb")
 
 CERTFR_RSS_URL = "https://www.cert.ssi.gouv.fr/feed/"
 SECURITY_FEEDS = [
@@ -158,7 +158,7 @@ class DarkWebAgent(BaseAgent):
                         params={"q": query, "per_page": 5},
                         headers={
                             "Accept": "application/vnd.github.v3+json",
-                            "User-Agent": "MH-CyberScore-VRM",
+                            "User-Agent": "CyberScore-VRM",
                         },
                     )
                     if resp.status_code == 200:

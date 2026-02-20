@@ -1,4 +1,4 @@
-"""Celery application configuration for MH-CyberScore agents.
+"""Celery application configuration for CyberScore agents.
 
 Configures the Celery app with Redis broker, task routing per agent type,
 scheduled beats for periodic rescanning, and timezone Europe/Paris.
@@ -10,7 +10,7 @@ from celery.schedules import crontab
 from app.config import settings
 
 celery_app = Celery(
-    "mh_cyberscore",
+    "cyberscore",
     broker=settings.celery_broker_url,
     backend=settings.redis_url,
 )

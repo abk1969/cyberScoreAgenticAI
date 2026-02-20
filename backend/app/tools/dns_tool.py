@@ -13,7 +13,7 @@ import dns.rdatatype
 
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.dns")
+logger = logging.getLogger("cyberscore.tools.dns")
 
 
 class DNSTool(BaseTool):

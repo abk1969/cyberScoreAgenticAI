@@ -9,7 +9,7 @@ from typing import Any
 
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.ct_logs")
+logger = logging.getLogger("cyberscore.tools.ct_logs")
 
 
 class CTLogsTool(BaseTool):

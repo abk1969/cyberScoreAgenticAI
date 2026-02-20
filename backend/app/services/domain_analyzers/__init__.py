@@ -1,4 +1,4 @@
-"""Domain analyzers for MH-CyberScore scoring engine."""
+"""Domain analyzers for CyberScore scoring engine."""
 
 from app.services.domain_analyzers.base import (
     BaseDomainAnalyzer,

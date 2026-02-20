@@ -1,4 +1,4 @@
-"""MH-CyberScore Scoring Engine — main scoring orchestration.
+"""CyberScore Scoring Engine — main scoring orchestration.
 
 Calculates global score (0-1000) and grade (A-F) by aggregating
 8 domain scores with configurable weights and criticality factors.
@@ -27,11 +27,11 @@ from app.utils.constants import (
     SIZE_NORMALIZATION,
 )
 
-logger = logging.getLogger("mh_cyberscore.scoring")
+logger = logging.getLogger("cyberscore.scoring")
 
 
 class ScoringEngine:
-    """Main scoring engine for MH-CyberScore.
+    """Main scoring engine for CyberScore.
 
     Orchestrates all 8 domain analyzers, applies weights and
     normalization, calculates global score and grade.

@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <title>Registre DORA Art.28 - MH-CyberScore</title>
+  <title>Registre DORA Art.28 - CyberScore</title>
   <style>
     @page { size: A4 landscape; margin: 14mm; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,7 +41,7 @@
 </head>
 <body>
   <div class="header">
-    <div class="logo">MH<span>-CyberScore</span></div>
+    <div class="logo">Cyber<span>Score</span></div>
     <div class="meta">Registre des accords contractuels — DORA Art. 28<br/>{{ generated_at }}<br/>Ref: {{ register_ref }}</div>
   </div>
 
@@ -80,7 +80,7 @@
           <th>Pays Donnees</th>
           <th>Plan de Sortie</th>
           <th>Dernier Audit</th>
-          <th>Score MH</th>
+          <th>Score</th>
         </tr>
       </thead>
       <tbody>
@@ -97,7 +97,7 @@
           <td>{{ provider.data_location }}</td>
           <td>{% if provider.exit_plan %}Oui{% else %}Non{% endif %}</td>
           <td>{{ provider.last_audit }}</td>
-          <td><strong>{{ provider.mh_score }}</strong></td>
+          <td><strong>{{ provider.score }}</strong></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -105,7 +105,7 @@
   </div>
 
   <div class="footer">
-    MH-CyberScore &mdash; Registre DORA genere le {{ generated_at }} &mdash; Confidentiel &mdash; A transmettre a l'ACPR sur demande
+    CyberScore &mdash; Registre DORA genere le {{ generated_at }} &mdash; Confidentiel &mdash; A transmettre a l'ACPR sur demande
   </div>
 </body>
 </html>

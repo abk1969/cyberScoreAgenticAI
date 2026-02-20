@@ -3,7 +3,7 @@
 import logging
 from typing import Any
 
-logger = logging.getLogger("mh_cyberscore.services.compliance")
+logger = logging.getLogger("cyberscore.services.compliance")
 
 DORA_ARTICLES = {
     "art28_risk_mgmt": "Gestion des risques tiers TIC (Art. 28)",

@@ -1,4 +1,4 @@
-"""MH-CyberScore MCP Tools — external API integrations for OSINT agents."""
+"""CyberScore MCP Tools — external API integrations for OSINT agents."""
 
 from app.tools.base_tool import BaseTool
 from app.tools.censys_tool import CensysTool

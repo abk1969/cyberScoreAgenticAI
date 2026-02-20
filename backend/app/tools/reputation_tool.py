@@ -14,7 +14,7 @@ from app.config import settings
 from app.services.proxy_service import get_scan_http_client
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.reputation")
+logger = logging.getLogger("cyberscore.tools.reputation")
 
 
 class ReputationTool(BaseTool):

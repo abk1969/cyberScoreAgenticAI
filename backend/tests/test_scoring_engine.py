@@ -1,4 +1,4 @@
-"""Tests for the MH-CyberScore scoring engine."""
+"""Tests for the CyberScore scoring engine."""
 
 import pytest
 

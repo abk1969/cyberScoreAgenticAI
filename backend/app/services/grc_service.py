@@ -11,7 +11,7 @@ from sqlalchemy.orm import selectinload
 
 from app.models.grc import FrameworkMapping, MaturityAssessment, SecurityControl
 
-logger = logging.getLogger("mh_cyberscore.services.grc")
+logger = logging.getLogger("cyberscore.services.grc")
 
 FRAMEWORKS = ["iso27001", "dora", "nis2", "hds", "rgpd"]
 

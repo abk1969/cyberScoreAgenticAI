@@ -9,7 +9,7 @@ from typing import Any
 
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.cve")
+logger = logging.getLogger("cyberscore.tools.cve")
 
 
 class CVETool(BaseTool):

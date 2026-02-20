@@ -22,7 +22,7 @@ from app.schemas.questionnaire import (
     SmartAnswerResponse,
 )
 
-logger = logging.getLogger("mh_cyberscore.questionnaire_service")
+logger = logging.getLogger("cyberscore.questionnaire_service")
 
 # ── Built-in questionnaire templates ────────────────────────────────────
 

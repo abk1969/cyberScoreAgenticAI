@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agents.m365_rating_agent import M365RatingAgent
 from app.models.internal_scoring import InternalFinding, InternalScan
 
-logger = logging.getLogger("mh_cyberscore.services.m365_rating")
+logger = logging.getLogger("cyberscore.services.m365_rating")
 
 
 class M365RatingService:

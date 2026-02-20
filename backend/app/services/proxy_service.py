@@ -25,7 +25,7 @@ import httpx
 
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.proxy")
+logger = logging.getLogger("cyberscore.proxy")
 
 # Realistic browser User-Agents for fingerprint evasion
 _USER_AGENTS = [

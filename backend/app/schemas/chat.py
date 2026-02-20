@@ -1,4 +1,4 @@
-"""Chat Pydantic schemas for ChatMH RAG."""
+"""Chat Pydantic schemas for CyberChat RAG."""
 
 from datetime import datetime
 

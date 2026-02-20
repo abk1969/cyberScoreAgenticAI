@@ -106,7 +106,7 @@ export default function ChatPage() {
         <div className="mb-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-[#1B3A5C]">
             <MessageCircle className="mr-2 inline h-6 w-6" />
-            ChatMH — Assistant IA
+            CyberChat — Assistant IA
           </h1>
           <button
             onClick={() => setShowHistory(!showHistory)}

@@ -11,7 +11,7 @@ from typing import Any
 
 import httpx
 
-logger = logging.getLogger("mh_cyberscore.llm_provider")
+logger = logging.getLogger("cyberscore.llm_provider")
 
 _HTTP_TIMEOUT = 120.0
 

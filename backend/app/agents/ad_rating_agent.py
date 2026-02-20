@@ -14,7 +14,7 @@ from uuid import uuid4
 from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 
-logger = logging.getLogger("mh_cyberscore.agents.ad_rating")
+logger = logging.getLogger("cyberscore.agents.ad_rating")
 
 # Scoring weights per check category
 AD_WEIGHTS = {

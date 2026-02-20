@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.agents.ad_rating_agent import ADRatingAgent
 from app.models.internal_scoring import InternalFinding, InternalScan
 
-logger = logging.getLogger("mh_cyberscore.services.ad_rating")
+logger = logging.getLogger("cyberscore.services.ad_rating")
 
 
 class ADRatingService:

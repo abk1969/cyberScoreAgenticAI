@@ -15,7 +15,7 @@ from app.agents.celery_app import celery_app
 from app.tools.dns_tool import DNSTool
 from app.tools.ssl_tool import SSLTool
 
-logger = logging.getLogger("mh_cyberscore.agents.nthparty")
+logger = logging.getLogger("cyberscore.agents.nthparty")
 
 CONCENTRATION_THRESHOLD = 0.30  # 30% — alert if exceeded
 

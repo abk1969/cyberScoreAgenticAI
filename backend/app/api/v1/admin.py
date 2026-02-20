@@ -24,7 +24,7 @@ from app.services.proxy_service import get_proxy_url, verify_proxy
 from app.utils.constants import DEFAULT_DOMAIN_WEIGHTS, SCORING_DOMAINS
 from app.utils.crypto import decrypt_data, encrypt_data
 
-logger = logging.getLogger("mh_cyberscore.admin")
+logger = logging.getLogger("cyberscore.admin")
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -126,7 +126,7 @@ def _get_encryption_key() -> bytes:
     if not settings.encryption_key:
         raise HTTPException(
             status_code=500,
-            detail="MH_ENCRYPTION_KEY not configured on server",
+            detail="CS_ENCRYPTION_KEY not configured on server",
         )
     return base64.b64decode(settings.encryption_key)
 

@@ -19,7 +19,7 @@ from tenacity import (
 from app.services.proxy_service import get_scan_http_client
 from app.utils.exceptions import ToolError
 
-logger = logging.getLogger("mh_cyberscore.tools")
+logger = logging.getLogger("cyberscore.tools")
 
 
 class BaseTool:
@@ -45,7 +45,7 @@ class BaseTool:
         self.headers: dict[str, str] = {}
         self._api_key = api_key
         self._call_log: list[dict[str, Any]] = []
-        self.logger = logging.getLogger(f"mh_cyberscore.tools.{name}")
+        self.logger = logging.getLogger(f"cyberscore.tools.{name}")
 
     @retry(
         stop=stop_after_attempt(3),

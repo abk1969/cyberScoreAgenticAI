@@ -1,4 +1,4 @@
-"""ChatMH Agent — AI chatbot with RAG for cyber scoring Q&A.
+"""CyberChat Agent — AI chatbot with RAG for cyber scoring Q&A.
 
 Uses Retrieval Augmented Generation:
 1. Embed user query
@@ -22,10 +22,10 @@ from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.agents.chat")
+logger = logging.getLogger("cyberscore.agents.chat")
 
-SYSTEM_PROMPT = """Tu es ChatMH, l'assistant IA de la plateforme MH-CyberScore
-de Malakoff Humanis. Tu réponds aux questions sur les scores de cybersécurité
+SYSTEM_PROMPT = """Tu es CyberChat, l'assistant IA de la plateforme CyberScore.
+Tu réponds aux questions sur les scores de cybersécurité
 des fournisseurs, les risques, la conformité DORA, et la gestion des risques
 tiers (VRM).
 
@@ -40,7 +40,7 @@ Règles strictes :
 
 
 class ChatAgent(BaseAgent):
-    """ChatMH — RAG-powered AI assistant for cyber scoring."""
+    """CyberChat — RAG-powered AI assistant for cyber scoring."""
 
     def __init__(self) -> None:
         super().__init__(name="chat", timeout=60.0)

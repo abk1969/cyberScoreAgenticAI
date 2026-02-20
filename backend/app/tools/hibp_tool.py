@@ -10,7 +10,7 @@ from typing import Any
 from app.config import settings
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.hibp")
+logger = logging.getLogger("cyberscore.tools.hibp")
 
 
 class HIBPTool(BaseTool):
@@ -25,7 +25,7 @@ class HIBPTool(BaseTool):
         )
         self.headers = {
             "hibp-api-key": self._api_key,
-            "User-Agent": "MH-CyberScore-VRM",
+            "User-Agent": "CyberScore-VRM",
             "Accept": "application/json",
         }
 

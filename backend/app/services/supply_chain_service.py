@@ -18,7 +18,7 @@ from app.schemas.supply_chain import (
     VendorDependencyResponse,
 )
 
-logger = logging.getLogger("mh_cyberscore.services.supply_chain")
+logger = logging.getLogger("cyberscore.services.supply_chain")
 
 CONCENTRATION_THRESHOLD = 0.30
 

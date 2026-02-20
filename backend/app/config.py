@@ -4,19 +4,19 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """MH-CyberScore application settings.
+    """CyberScore application settings.
 
-    All values are loaded from environment variables with the MH_ prefix.
-    Example: MH_DATABASE_URL, MH_REDIS_URL, etc.
+    All values are loaded from environment variables with the CS_ prefix.
+    Example: CS_DATABASE_URL, CS_REDIS_URL, etc.
     """
 
-    model_config = SettingsConfigDict(env_file=".env", env_prefix="MH_")
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="CS_")
 
     # Core
     debug: bool = False
 
     # Database
-    database_url: str = "postgresql+psycopg://mh:mh@localhost:5432/mhcyberscore"
+    database_url: str = "postgresql+psycopg://csadmin:csadmin@localhost:5432/cyberscore"
 
     # Redis / Celery
     redis_url: str = "redis://localhost:6379/0"
@@ -24,8 +24,8 @@ class Settings(BaseSettings):
 
     # Keycloak / Auth
     keycloak_url: str = "http://localhost:8080"
-    keycloak_realm: str = "mh-cyberscore"
-    keycloak_client_id: str = "mh-cyberscore-api"
+    keycloak_realm: str = "cyberscore"
+    keycloak_client_id: str = "cyberscore-api"
     jwt_secret_key: str = "change-me-in-production"
     jwt_algorithm: str = "RS256"
 
@@ -70,7 +70,7 @@ class Settings(BaseSettings):
     minio_endpoint: str = "localhost:9000"
     minio_access_key: str = ""
     minio_secret_key: str = ""
-    minio_bucket: str = "mh-cyberscore"
+    minio_bucket: str = "cyberscore"
 
     # Splunk HEC integration
     splunk_hec_url: str = ""

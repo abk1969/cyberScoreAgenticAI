@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: mh-cyberscore
+  namespace: cyberscore
   labels:
     app: backend
 spec:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: registry.mh-cyberscore.fr/backend:latest
+          image: registry.cyberscore.fr/backend:latest
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -59,7 +59,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
-  namespace: mh-cyberscore
+  namespace: cyberscore
   labels:
     app: backend
 spec:

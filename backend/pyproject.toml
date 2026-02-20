@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "mh-cyberscore"
+name = "cyberscore"
 version = "1.0.0"
-description = "MH-CyberScore — Sovereign Cyber Scoring & VRM Platform for Malakoff Humanis"
-authors = ["Malakoff Humanis SSI <ssi@malakoffhumanis.com>"]
+description = "CyberScore — Sovereign Cyber Scoring & VRM Platform"
+authors = ["CyberScore Team <admin@example.com>"]
 readme = "README.md"
 packages = [{include = "app"}]
 

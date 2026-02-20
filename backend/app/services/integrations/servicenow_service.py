@@ -7,7 +7,7 @@ import httpx
 
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.integrations.servicenow")
+logger = logging.getLogger("cyberscore.integrations.servicenow")
 
 
 class ServiceNowService:
@@ -33,7 +33,7 @@ class ServiceNowService:
 
         url = f"{self.base_url}/table/incident"
         payload = {
-            "short_description": alert.get("title", "MH-CyberScore Alert"),
+            "short_description": alert.get("title", "CyberScore Alert"),
             "description": alert.get("description", ""),
             "urgency": "1" if alert.get("severity") == "critical" else "2",
             "impact": "2",

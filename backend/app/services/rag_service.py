@@ -1,4 +1,4 @@
-"""RAG Service — Retrieval Augmented Generation for ChatMH.
+"""RAG Service — Retrieval Augmented Generation for CyberChat.
 
 Indexes vendor scores, findings, and documents into Qdrant vector DB,
 then provides semantic search for chat context retrieval.
@@ -10,11 +10,11 @@ from uuid import uuid4
 
 from app.services.llm_provider import BaseLLMProvider
 
-logger = logging.getLogger("mh_cyberscore.services.rag")
+logger = logging.getLogger("cyberscore.services.rag")
 
-COLLECTION_SCORES = "mh_scores"
-COLLECTION_FINDINGS = "mh_findings"
-COLLECTION_DOCUMENTS = "mh_documents"
+COLLECTION_SCORES = "cyber_scores"
+COLLECTION_FINDINGS = "cyber_findings"
+COLLECTION_DOCUMENTS = "cyber_documents"
 VECTOR_SIZE = 1024  # Default; adjusted on first embed call
 
 

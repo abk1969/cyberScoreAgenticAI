@@ -23,7 +23,7 @@ export function ChatWidget() {
           <div className="flex items-center justify-between rounded-t-xl bg-[#1B3A5C] px-4 py-3">
             <div className="flex items-center gap-2 text-white">
               <MessageCircle className="h-4 w-4" />
-              <span className="text-sm font-semibold">ChatMH</span>
+              <span className="text-sm font-semibold">CyberChat</span>
             </div>
             <button
               onClick={() => setIsOpen(false)}

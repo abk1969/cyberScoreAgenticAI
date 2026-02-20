@@ -1,7 +1,7 @@
-# MH-CyberScore Infrastructure Skill
+# CyberScore Infrastructure Skill
 
 ## Description
-Guide for setting up the MH-CyberScore infrastructure — Docker Compose for local dev, Kubernetes for production, CI/CD pipelines, and monitoring. Use when creating Docker configurations, K8s manifests, CI/CD pipelines, or infrastructure-as-code.
+Guide for setting up the CyberScore infrastructure — Docker Compose for local dev, Kubernetes for production, CI/CD pipelines, and monitoring. Use when creating Docker configurations, K8s manifests, CI/CD pipelines, or infrastructure-as-code.
 
 ## Local Development: Docker Compose
 
@@ -28,15 +28,15 @@ services:
   postgres:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_DB: mh_cyberscore
-      POSTGRES_USER: ${DB_USER:-mhcs}
+      POSTGRES_DB: cyberscore
+      POSTGRES_USER: ${DB_USER:-csadmin}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mhcs"]
+      test: ["CMD-SHELL", "pg_isready -U csadmin"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -55,11 +55,11 @@ services:
       dockerfile: Dockerfile
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      MH_DATABASE_URL: postgresql+asyncpg://${DB_USER:-mhcs}:${DB_PASSWORD}@postgres:5432/mh_cyberscore
-      MH_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
-      MH_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
-      MH_KEYCLOAK_URL: http://keycloak:8080
-      MH_DEBUG: "true"
+      CS_DATABASE_URL: postgresql+asyncpg://${DB_USER:-csadmin}:${DB_PASSWORD}@postgres:5432/cyberscore
+      CS_REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      CS_CELERY_BROKER_URL: redis://:${REDIS_PASSWORD}@redis:6379/1
+      CS_KEYCLOAK_URL: http://keycloak:8080
+      CS_DEBUG: "true"
     ports:
       - "8000:8000"
     volumes:
@@ -191,9 +191,9 @@ security:
 ## Environment Variables Template (.env.example)
 ```bash
 # Database
-DB_USER=mhcs
+DB_USER=csadmin
 DB_PASSWORD=
-DATABASE_URL=postgresql+asyncpg://mhcs:password@localhost:5432/mh_cyberscore
+DATABASE_URL=postgresql+asyncpg://csadmin:password@localhost:5432/cyberscore
 
 # Redis
 REDIS_PASSWORD=
@@ -204,8 +204,8 @@ CELERY_BROKER_URL=redis://:password@localhost:6379/1
 
 # Auth
 KEYCLOAK_URL=http://localhost:8080
-KEYCLOAK_REALM=mh-cyberscore
-KEYCLOAK_CLIENT_ID=mh-cyberscore-api
+KEYCLOAK_REALM=cyberscore
+KEYCLOAK_CLIENT_ID=cyberscore-api
 KEYCLOAK_CLIENT_SECRET=
 JWT_SECRET_KEY=
 
@@ -225,11 +225,11 @@ ABUSEIPDB_API_KEY=
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=
 MINIO_SECRET_KEY=
-MINIO_BUCKET=mh-cyberscore
+MINIO_BUCKET=cyberscore
 
 # App
-MH_DEBUG=true
-MH_CORS_ORIGINS=["http://localhost:3000"]
+CS_DEBUG=true
+CS_CORS_ORIGINS=["http://localhost:3000"]
 ```
 
 ## Sovereignty Constraints (NON-NEGOTIABLE)

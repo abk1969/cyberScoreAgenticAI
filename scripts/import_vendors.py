@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MH-CyberScore Bulk Vendor Import from CSV.
+CyberScore Bulk Vendor Import from CSV.
 
 Imports vendors from a CSV file into the database.
 Expected CSV columns: name, domain, tier, service_type, country
@@ -21,7 +21,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql+asyncpg://mhcs:changeme_db_password@localhost:5432/mh_cyberscore"
+DATABASE_URL = "postgresql+asyncpg://csadmin:changeme_db_password@localhost:5432/cyberscore"
 
 REQUIRED_COLUMNS = {"name", "domain"}
 OPTIONAL_COLUMNS = {"tier", "service_type", "country"}
@@ -124,7 +124,7 @@ async def import_vendors(rows: list[dict], dry_run: bool = False) -> tuple[int, 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="MH-CyberScore Bulk Vendor Import",
+        description="CyberScore Bulk Vendor Import",
         epilog="CSV must have columns: name, domain. Optional: tier, service_type, country",
     )
     parser.add_argument(
@@ -145,7 +145,7 @@ def main() -> None:
         print(f"Error: File not found: {args.file}")
         sys.exit(1)
 
-    print("MH-CyberScore Vendor Import")
+    print("CyberScore Vendor Import")
     print("=" * 40)
     print(f"File: {args.file}")
 

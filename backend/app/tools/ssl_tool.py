@@ -15,7 +15,7 @@ import httpx
 from app.services.proxy_service import get_scan_http_client
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.ssl")
+logger = logging.getLogger("cyberscore.tools.ssl")
 
 
 class SSLTool(BaseTool):

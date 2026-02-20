@@ -15,7 +15,7 @@ from app.agents.darkweb_agent import DarkWebAgent
 from app.agents.nthparty_agent import NthPartyAgent
 from app.agents.osint_agent import OSINTAgent
 
-logger = logging.getLogger("mh_cyberscore.agents.orchestrator")
+logger = logging.getLogger("cyberscore.agents.orchestrator")
 
 
 class OrchestratorAgent(BaseAgent):

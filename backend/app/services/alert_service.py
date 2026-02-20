@@ -3,7 +3,7 @@
 import logging
 from typing import Any
 
-logger = logging.getLogger("mh_cyberscore.services.alert")
+logger = logging.getLogger("cyberscore.services.alert")
 
 SCORE_DROP_THRESHOLD = 100
 GRADE_ORDER = {"A": 5, "B": 4, "C": 3, "D": 2, "F": 1}

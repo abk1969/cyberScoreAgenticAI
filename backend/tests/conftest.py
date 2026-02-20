@@ -1,4 +1,4 @@
-"""Pytest fixtures for MH-CyberScore backend tests."""
+"""Pytest fixtures for CyberScore backend tests."""
 
 from collections.abc import AsyncGenerator
 
@@ -41,7 +41,7 @@ def mock_user() -> UserClaims:
     """Return a mock admin user for auth-protected endpoints."""
     return UserClaims(
         sub="test-user-id",
-        email="admin@malakoffhumanis.com",
+        email="admin@example.com",
         name="Test Admin",
         role="admin",
     )

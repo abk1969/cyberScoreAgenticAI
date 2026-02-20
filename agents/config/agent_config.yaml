@@ -1,4 +1,4 @@
-# MH-CyberScore — Agent Configuration
+# CyberScore — Agent Configuration
 # Each agent's runtime parameters
 
 agents:
@@ -39,7 +39,7 @@ agents:
     concurrency: 20
     model: "mistralai/Mistral-Large-Instruct-2407"
     rag_top_k: 5
-    description: "ChatMH — assistant IA RAG cyber scoring"
+    description: "CyberChat — assistant IA RAG cyber scoring"
 
   report:
     queue: reports

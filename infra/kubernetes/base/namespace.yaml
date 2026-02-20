@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: mh-cyberscore
+  name: cyberscore
   labels:
-    app.kubernetes.io/part-of: mh-cyberscore
+    app.kubernetes.io/part-of: cyberscore
     app.kubernetes.io/managed-by: kustomize

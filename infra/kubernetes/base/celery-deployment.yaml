@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: celery-worker
-  namespace: mh-cyberscore
+  namespace: cyberscore
   labels:
     app: celery-worker
 spec:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: celery-worker
-          image: registry.mh-cyberscore.fr/backend:latest
+          image: registry.cyberscore.fr/backend:latest
           command:
             - celery
             - -A
@@ -61,7 +61,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: celery-beat
-  namespace: mh-cyberscore
+  namespace: cyberscore
   labels:
     app: celery-beat
 spec:
@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
         - name: celery-beat
-          image: registry.mh-cyberscore.fr/backend:latest
+          image: registry.cyberscore.fr/backend:latest
           command:
             - celery
             - -A

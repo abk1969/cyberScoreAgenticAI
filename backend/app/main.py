@@ -1,4 +1,4 @@
-"""FastAPI application factory for MH-CyberScore."""
+"""FastAPI application factory for CyberScore."""
 
 from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
@@ -24,8 +24,8 @@ def create_app() -> FastAPI:
         Configured FastAPI instance.
     """
     app = FastAPI(
-        title="MH-CyberScore API",
-        description="Sovereign Cyber Scoring & VRM Platform for Malakoff Humanis",
+        title="CyberScore API",
+        description="Sovereign Cyber Scoring & VRM Platform",
         version="1.0.0",
         docs_url="/api/docs" if settings.debug else None,
         redoc_url="/api/redoc" if settings.debug else None,
@@ -48,7 +48,7 @@ def create_app() -> FastAPI:
     @app.get("/health")
     async def root_health() -> dict:
         """Root health check endpoint."""
-        return {"status": "ok", "service": "mh-cyberscore-api"}
+        return {"status": "ok", "service": "cyberscore-api"}
 
     return app
 

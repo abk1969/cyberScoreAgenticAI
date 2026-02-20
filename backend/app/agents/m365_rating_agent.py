@@ -13,7 +13,7 @@ from typing import Any
 from app.agents.base_agent import AgentResult, BaseAgent
 from app.agents.celery_app import celery_app
 
-logger = logging.getLogger("mh_cyberscore.agents.m365_rating")
+logger = logging.getLogger("cyberscore.agents.m365_rating")
 
 M365_WEIGHTS = {
     "mfa_coverage": 0.25,

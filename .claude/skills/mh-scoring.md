@@ -1,7 +1,7 @@
-# MH-CyberScore Scoring Engine Skill
+# CyberScore Scoring Engine Skill
 
 ## Description
-Guide for implementing the MH-CyberScore scoring methodology — the core algorithm that rates vendor cybersecurity posture. Use when building the scoring engine, domain analyzers, grading logic, or any scoring-related code.
+Guide for implementing the CyberScore scoring methodology — the core algorithm that rates vendor cybersecurity posture. Use when building the scoring engine, domain analyzers, grading logic, or any scoring-related code.
 
 ## Scoring Overview
 

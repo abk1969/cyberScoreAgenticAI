@@ -7,7 +7,7 @@ import httpx
 
 from app.config import settings
 
-logger = logging.getLogger("mh_cyberscore.integrations.splunk")
+logger = logging.getLogger("cyberscore.integrations.splunk")
 
 
 class SplunkService:
@@ -27,7 +27,7 @@ class SplunkService:
             return False
 
         url = f"{self.hec_url.rstrip('/')}/services/collector/event"
-        payload = {"event": event, "sourcetype": "mh_cyberscore"}
+        payload = {"event": event, "sourcetype": "cyberscore"}
 
         try:
             async with httpx.AsyncClient(timeout=10.0, verify=False) as client:

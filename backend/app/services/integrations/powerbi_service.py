@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.scoring import Finding, VendorScore
 from app.models.vendor import Vendor
 
-logger = logging.getLogger("mh_cyberscore.services.powerbi")
+logger = logging.getLogger("cyberscore.services.powerbi")
 
 
 class PowerBIService:

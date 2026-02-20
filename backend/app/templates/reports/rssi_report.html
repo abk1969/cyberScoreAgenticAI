@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8"/>
-  <title>Rapport RSSI Detaille - MH-CyberScore</title>
+  <title>Rapport RSSI Detaille - CyberScore</title>
   <style>
     @page { size: A4; margin: 18mm; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,7 +65,7 @@
   <!-- Page 1: Overview -->
   <div class="page">
     <div class="header">
-      <div class="logo">MH<span>-CyberScore</span></div>
+      <div class="logo">Cyber<span>Score</span></div>
       <div class="meta">Rapport RSSI Detaille<br/>Fournisseur: {{ vendor_name }}<br/>{{ generated_at }}</div>
     </div>
 
@@ -90,7 +90,7 @@
   {% for ds in domain_scores %}
   <div class="page">
     <div class="header">
-      <div class="logo">MH<span>-CyberScore</span></div>
+      <div class="logo">Cyber<span>Score</span></div>
       <div class="meta">{{ ds.code }} — {{ ds.name }}</div>
     </div>
 
@@ -130,7 +130,7 @@
   {% endfor %}
 
   <div class="footer">
-    MH-CyberScore &mdash; Rapport RSSI genere le {{ generated_at }} &mdash; Confidentiel
+    CyberScore &mdash; Rapport RSSI genere le {{ generated_at }} &mdash; Confidentiel
   </div>
 </body>
 </html>

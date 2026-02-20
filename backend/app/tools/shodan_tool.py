@@ -11,7 +11,7 @@ from typing import Any
 from app.config import settings
 from app.tools.base_tool import BaseTool
 
-logger = logging.getLogger("mh_cyberscore.tools.shodan")
+logger = logging.getLogger("cyberscore.tools.shodan")
 
 
 class ShodanTool(BaseTool):
